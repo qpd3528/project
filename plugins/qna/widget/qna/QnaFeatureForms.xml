@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns="http://ofbiz.apache.org/Widget-Form" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <form name="FindQnaFeatures" type="single" target="FindQnaFeature" default-entity-name="QnaFeature">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="qnaFeatureId" title="${uiLabelMap.QnaQnaFeatureId}"><text-find/></field>
+        <field name="description" title="${uiLabelMap.CommonDescription}"><text-find/></field>
+        <field name="searchButton" title="${uiLabelMap.CommonFind}" widget-style="smallSubmit"><submit button-type="button"/></field>
+    </form>
+
+
+    <grid name="ListQnaFeatures" list-name="listIt" paginate-target="FindQnaFeature" default-entity-name="QnaFeature"
+        separate-columns="true" odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="qnaFeatureCtx"/>
+                <field-map field-name="entityName" value="QnaFeature"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        <field name="qnaFeatureId" title="${uiLabelMap.QnaQnaFeatureId}" widget-style="buttontext">
+            <hyperlink description="${qnaFeatureId}" target="EditQnaFeature" also-hidden="false">
+                <parameter param-name="qnaFeatureId"/>
+            </hyperlink>
+        </field>
+        <field name="description" title="${uiLabelMap.CommonDescription}"><display/></field>
+    </grid>
+
+    <form name="EditQnaFeature" type="single" target="updateQnaFeature" title="" default-map-name="qnaFeature">
+        <actions>
+            <entity-one entity-name="StatusItem" value-field="currentStatus" auto-field-map="false">
+                <field-map field-name="statusId" from-field="qna.statusId"/>
+            </entity-one>
+        </actions>
+        <alt-target use-when="qnaFeature==null" target="createQnaFeature"/>
+        <auto-fields-service service-name="updateQnaFeature"/>
+        <field use-when="qnaFeature!=null" name="qnaFeatureId" title="${uiLabelMap.QnaQnaFeatureId}"><display/></field>
+        <field use-when="qnaFeature==null @and qnaFeatureId==null" name="qnaFeatureId" title="${uiLabelMap.QnaQnaFeatureId}"><ignored/></field>
+        <field use-when="qnaFeature==null @and qnaFeatureId!=null" name="qnaFeatureId" title="${uiLabelMap.QnaQnaFeatureId}"><display description="${uiLabelMap.CommonCannotBeFound}: [${qnaFeatureId}]" also-hidden="false"/></field>
+        <field name="description" title="${uiLabelMap.CommonDescription}" required-field="true"/>
+        <field name="featureSourceEnumId" title="${uiLabelMap.QnaFeatureSource}">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="Enumeration" key-field-name="enumId" description="${description} [${enumCode}]">
+                    <entity-constraint name="enumTypeId" value="EXMPL_FEAT_SOURCE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" use-when="qnaFeature==null" title="${uiLabelMap.CommonCreate}"><submit button-type="button"/></field>
+        <field name="submitButton" use-when="qnaFeature!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </form>
+
+    <!-- QnaFeatureAppl -->
+    <grid name="ListQnaFeatureAppls"  list-name="qnaFeatureAppls"  target="feature_updateQnaFeatureAppl">
+        <actions>
+            <entity-condition entity-name="QnaFeatureAppl">
+                <order-by field-name="qnaId"/>
+                <order-by field-name="sequenceNum"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service service-name="updateQnaFeatureAppl"/>
+        <field name="qnaId" title="${uiLabelMap.QnaQna}">
+            <display-entity entity-name="Qna" description="${qnaName}">
+                <sub-hyperlink target="EditQnaLayer" description="${qnaId}" link-style="buttontext" link-type="layered-modal">
+                    <parameter param-name="qnaId"/>
+                </sub-hyperlink>
+            </display-entity>
+        </field>
+        <field name="qnaFeatureId"><hidden/></field>
+        <field name="fromDate"><display/></field>
+        <field name="qnaFeatureApplTypeId" title="${uiLabelMap.CommonType}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="QnaFeatureApplType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="deleteLink" title="" widget-style="buttontext">
+            <hyperlink description="${uiLabelMap.CommonDelete}" target="feature_deleteQnaFeatureAppl" also-hidden="false">
+                <parameter param-name="qnaId"/>
+                <parameter param-name="qnaFeatureId"/>
+                <parameter param-name="fromDate"/>
+            </hyperlink>
+        </field>
+    </grid>
+
+
+    <form name="AddQnaFeatureAppl" type="single" target="feature_createQnaFeatureAppl" title="">
+        <auto-fields-service service-name="createQnaFeatureAppl"/>
+        <field name="qnaId" title="${uiLabelMap.QnaQna}">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="Qna" description="${qnaName} [${qnaId}]">
+                    <entity-order-by field-name="qnaName"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="qnaFeatureId">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="QnaFeature" description="${description} [${qnaFeatureId}]">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>        
+        </field>
+        <field name="qnaFeatureApplTypeId" title="${uiLabelMap.CommonType}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="QnaFeatureApplType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+
+    <form name="LookupFindQnaFeature" target="LookupQnaFeature" title="" type="single">
+        <auto-fields-entity entity-name="QnaFeature" default-field-type="find"/>
+        <field name="qnaFeatureId" title="${uiLabelMap.QnaQnaFeatureId}"/> <!-- <text-find/> -->
+        <field name="featureSourceEnumId" title="${uiLabelMap.QnaFeatureSource}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="Enumeration" key-field-name="enumId" description="${description} [${enumCode}]">
+                    <entity-constraint name="enumTypeId" value="EXMPL_FEAT_SOURCE"/>
+                    <entity-order-by field-name="sequenceId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="description" title="${uiLabelMap.CommonDescription}"/>
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="submitButton" title="${uiLabelMap.CommonFind}"><submit button-type="button"/></field>
+    </form>
+
+    <grid name="LookupListQnaFeature" list-name="listIt" title=""
+        paginate-target="LookupQnaFeature">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="parameters"/>
+                <field-map field-name="orderBy" value="description"/>
+                <field-map field-name="entityName" value="QnaFeature"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+        </actions>
+        <!--<auto-fields-entity entity-name="QnaFeature" default-field-type="display"/>-->
+        <field name="qnaFeatureId" title="${uiLabelMap.QnaQnaFeatureId}" widget-style="buttontext">
+            <hyperlink description="${qnaFeatureId}" target="javascript:set_value('${qnaFeatureId}')" also-hidden="false" target-type="plain"/>
+        </field>
+        <field name="featureSourceEnumId" title="${uiLabelMap.QnaFeatureSource}">
+            <display-entity entity-name="Enumeration" key-field-name="enumId" description="${description} [${enumCode}]" also-hidden="false"/>
+        </field>
+        <field name="description" title="${uiLabelMap.CommonDescription}"><display also-hidden="false"/></field>
+    </grid>
+
+</forms>

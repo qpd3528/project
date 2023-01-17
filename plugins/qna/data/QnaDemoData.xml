@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<entity-engine-xml>
+    <QnaType qnaTypeId="GENERAL_INQUIRY" description="일반 문의"/>
+    <QnaType qnaTypeId="SERVICE" description="서비스 관련" parentTypeId="GENERAL_INQUIRY"/>
+    <QnaType qnaTypeId="ACCOUNT" description="계정 관련" parentTypeId="GENERAL_INQUIRY"/>
+    <QnaType qnaTypeId="CONTENTS" description="콘텐츠 관련" parentTypeId="GENERAL_INQUIRY"/>
+    <QnaType qnaTypeId="MATIS_TRANSLATION" description="번역기(MATIS) 관련" parentTypeId="GENERAL_INQUIRY"/>
+    <QnaType qnaTypeId="ETC" description="기타" parentTypeId="GENERAL_INQUIRY"/>
+    <QnaType qnaTypeId="E_COMMERCE" description="유료 서비스 관련 문의"/>
+    <QnaType qnaTypeId="USAGE_FEE" description="이용요금 관련" parentTypeId="E_COMMERCE"/>
+
+    <QnaFeatureApplType qnaFeatureApplTypeId="REQUIRED" description="Required"/>
+    <QnaFeatureApplType qnaFeatureApplTypeId="DESIRED" description="Desired"/>
+    <QnaFeatureApplType qnaFeatureApplTypeId="NOT_ALLOWED" description="Not Allowed"/>
+
+    <StatusType description="Qna" statusTypeId="QNA_STATUS" hasTable="N"/>
+    <StatusItem description="접수" sequenceId="01" statusCode="ACCEPTED" statusId="QNA_ACCEPTED" statusTypeId="QNA_STATUS"/>
+    <StatusItem description="처리 중" sequenceId="02" statusCode="IN_PROGRESS" statusId="QNA_IN_PROGRESS" statusTypeId="QNA_STATUS"/>
+    <StatusItem description="처리 완료" sequenceId="03" statusCode="PROCESSING_COMPLETED" statusId="QNA_COMPLETED" statusTypeId="QNA_STATUS"/>
+
+    <StatusValidChange statusId="QNA_ACCEPTED" statusIdTo="QNA_IN_PROGRESS" transitionName="처리 중으로 변경"/>
+    <StatusValidChange statusId="QNA_IN_PROGRESS" statusIdTo="QNA_COMPLETED" transitionName="처리 완료로 변경"/>
+
+    <EnumerationType description="Qna Feature Source" enumTypeId="EXMPL_FEAT_SOURCE" hasTable="N"/>
+    <Enumeration description="Customer" enumCode="CUSTOMER" enumId="EXFTSRC_CUSTOMER" sequenceId="01" enumTypeId="EXMPL_FEAT_SOURCE"/>
+    <Enumeration description="Partner" enumCode="PARTNER" enumId="EXFTSRC_PARTNER" sequenceId="02" enumTypeId="EXMPL_FEAT_SOURCE"/>
+    <Enumeration description="Employee" enumCode="EMPLOYEE" enumId="EXFTSRC_EMPLOYEE" sequenceId="03" enumTypeId="EXMPL_FEAT_SOURCE"/>
+
+    <Qna qnaId="EX01" qnaTitle="Qna 1" qnaTypeId="GENERAL_INQUIRY" statusId="QNA_ACCEPTED"/>
+    <Qna qnaId="EX02" qnaTitle="Qna 2" qnaTypeId="GENERAL_INQUIRY" statusId="QNA_ACCEPTED"/>
+    <Qna qnaId="EX03" qnaTitle="Qna 3" qnaTypeId="SERVICE" statusId="QNA_ACCEPTED"/>
+    <Qna qnaId="EX04" qnaTitle="Qna 4" qnaTypeId="SERVICE" statusId="QNA_ACCEPTED"/>
+    <Qna qnaId="EX05" qnaTitle="Qna 5" qnaTypeId="ACCOUNT" statusId="QNA_ACCEPTED"/>
+    <Qna qnaId="EX06" qnaTitle="Qna 6" qnaTypeId="CONTENTS" statusId="QNA_IN_PROGRESS"/>
+    <Qna qnaId="EX07" qnaTitle="Qna 7" qnaTypeId="CONTENTS" statusId="QNA_IN_PROGRESS"/>
+    <Qna qnaId="EX08" qnaTitle="Qna 8" qnaTypeId="MATIS_TRANSLATION" statusId="QNA_IN_PROGRESS"/>
+    <Qna qnaId="EX09" qnaTitle="Qna 9" qnaTypeId="MATIS_TRANSLATION" statusId="QNA_IN_PROGRESS"/>
+    <Qna qnaId="EX10" qnaTitle="Qna 10" qnaTypeId="ETC" statusId="QNA_IN_PROGRESS"/>
+    <Qna qnaId="EX11" qnaTitle="Qna 11" qnaTypeId="ETC" statusId="QNA_IN_PROGRESS" description="mMy inspired qna 11 description"/>
+    <Qna qnaId="EX12" qnaTitle="Qna 12" qnaTypeId="ETC" statusId="QNA_IN_PROGRESS" description="mMy inspired qna 12 description"/>
+    <create>
+        <Qna qnaId="EX13" qnaTitle="Qna 13" qnaTypeId="E_COMMERCE" statusId="QNA_IN_PROGRESS"/>
+        <Qna qnaId="EX14" qnaTitle="Qna 14" qnaTypeId="E_COMMERCE" statusId="QNA_IN_PROGRESS"/>
+    </create>
+    <create-replace>
+        <Qna qnaId="EX12" qnaTitle="Qna 12 after replace" qnaTypeId="USAGE_FEE" statusId="QNA_IN_PROGRESS"/>
+    </create-replace>
+    <create-update>
+        <Qna qnaId="EX12" qnaTitle="Qna 11 after update" qnaTypeId="USAGE_FEE" statusId="QNA_IN_PROGRESS"/>
+    </create-update>
+    <delete>
+        <Qna qnaId="EX09"/>
+    </delete>
+    <Qna qnaId="EX10" qnaTitle="Qna 10 after update"/>
+
+    <QnaItem qnaId="EX01" qnaItemSeqId="00001" description="EX1-001" amount="10"/>
+    <QnaItem qnaId="EX01" qnaItemSeqId="00002" description="EX1-002" amount="20"/>
+    <QnaItem qnaId="EX02" qnaItemSeqId="00001" description="EX2-001" amount="10"/>
+    <QnaItem qnaId="EX02" qnaItemSeqId="00002" description="EX2-002" amount="20"/>
+    <QnaItem qnaId="EX02" qnaItemSeqId="00003" description="EX2-003" amount="30"/>
+
+    <QnaStatus qnaId="EX01" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="QNA_ACCEPTED"/>
+    <QnaStatus qnaId="EX01" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="QNA_IN_PROGRESS"/>
+    <QnaStatus qnaId="EX01" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="QNA_COMPLETED"/>
+    <QnaStatus qnaId="EX02" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="QNA_ACCEPTED"/>
+    <QnaStatus qnaId="EX02" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="QNA_IN_PROGRESS"/>
+    <QnaStatus qnaId="EX02" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="QNA_COMPLETED"/>
+</entity-engine-xml>

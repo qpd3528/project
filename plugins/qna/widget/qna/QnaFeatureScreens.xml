@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://ofbiz.apache.org/Widget-Screen" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Screen http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <!-- list all qnafeatures in a tabular format -->
+    <screen name="FindQnaFeature">
+        <section>
+            <actions>
+                <set field="headerItem" value="QnaFeature"/>
+                <set field="titleProperty" value="PageTitleFindQnaFeature"/>
+                <set field="qnaFeatureCtx" from-field="parameters"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                <if-has-permission permission="QNA" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="menu-bar">
+                                        <container style="button-bar"><link target="EditQnaFeature" text="${uiLabelMap.QnaNewQnaFeature}" style="buttontext create"/></container>
+                                    </decorator-section>
+                                    <decorator-section name="search-options">
+                                        <include-form name="FindQnaFeatures" location="component://qna/widget/qna/QnaFeatureForms.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <include-grid name="ListQnaFeatures" location="component://qna/widget/qna/QnaFeatureForms.xml"/>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.QnaViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditQnaFeature">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditQnaFeature"/>
+                <set field="tabButtonItem" value="EditQnaFeature"/>
+                <set field="qnaFeatureId" from-field="parameters.qnaFeatureId"/>
+                <entity-one entity-name="QnaFeature" value-field="qnaFeature"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonQnaFeatureDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.QnaFeature}">
+                            <include-form name="EditQnaFeature" location="component://qna/widget/qna/QnaFeatureForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditQnaFeatureQnaAppls">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditQnaFeatureQnaAppls"/>
+                <set field="tabButtonItem" value="EditQnaFeatureQnaAppls"/>
+                <set field="qnaFeatureId" from-field="parameters.qnaFeatureId"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonQnaFeatureDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.QnaFeaturesByQna}">
+                            <include-grid name="ListQnaFeatureAppls" location="component://qna/widget/qna/QnaFeatureForms.xml"/>
+                        </screenlet>
+                        <screenlet title="Add Feature To Qna">
+                            <include-form name="AddQnaFeatureAppl" location="component://qna/widget/qna/QnaFeatureForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="LookupQnaFeature">
+        <section>
+            <condition>
+                <if-has-permission permission="QNA" action="_VIEW"/>
+            </condition>
+            <actions>
+                <property-map resource="QnaUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" from-field="uiLabelMap.PageTitleLookupQnaFeature"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSizeDefaultValue" value="${groovy: modelTheme.getDefaultViewSize()}" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+                
+                <!-- entries needed for lookup ajax auto completer -->
+                <!-- required: entity to search in -->
+                <set field="entityName" value="QnaFeature"/>
+
+                <!-- required: fields to search a match -->
+                <set field="searchFields" value="[qnaFeatureId, description]"/>
+                
+                <!-- optional: field to return after user selection, default is first element of searchFields -->
+                <!-- return field might be hidden based on widget.autocompleter.displayReturnField property in widget.properties -->
+                <!--set field="returnField" value="qnaFeatureId"/-->
+
+                <!-- optional: fields to display, default are searchFields -->
+                <!--set field="displayFields" value="[qnaFeatureId, description]"/-->
+                
+            </actions>
+
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupFindQnaFeature" location="component://qna/widget/qna/QnaFeatureForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-grid name="LookupListQnaFeature" location="component://qna/widget/qna/QnaFeatureForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

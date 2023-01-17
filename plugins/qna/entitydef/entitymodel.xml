@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<entitymodel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/entitymodel.xsd">
+    <!-- ========================================================= -->
+    <!-- ======================== Defaults ======================= -->
+    <!-- ========================================================= -->
+    <title>Entity of an Apache OFBiz Component</title>
+    <description>None</description>
+    <version>1.0</version>
+    <default-resource-name>QnaEntityLabels</default-resource-name>
+
+    <!-- ========================================================= -->
+    <!-- ======================== Data Model ===================== -->
+    <!-- The modules in this file are as follows:                  -->
+    <!--  - org.apache.ofbiz.qna.qna -->
+    <!--  - org.apache.ofbiz.qna.feature -->
+    <!-- ========================================================= -->
+
+    <!-- ========================================================= -->
+    <!-- org.apache.ofbiz.qna.qna -->
+    <!-- ========================================================= -->
+
+    <entity entity-name="Qna" package-name="org.apache.ofbiz.qna.qna" title="Qna Entity">
+        <field name="qnaId" type="id"><description>primary sequenced ID</description></field>
+        <field name="qnaTypeId" type="id"></field>
+        <field name="statusId" type="id"></field>
+        <field name="qnaTitle" type="name"></field>
+        <field name="comments" type="comment"></field>
+        <field name="qnaImgUrl" type="url"></field>
+        <field name="description" type="description"></field>
+        <field name="qnaAnswerContact" type="name"></field>
+        <field name="appVer" type="name"></field>
+        <field name="osTypeId" type="id"></field>
+        <field name="viewOptId" type="id"></field>
+        <field name="userLoginId" type="id"></field>
+        <field name="lastUpdatedId" type="id"></field>
+        <prim-key field="qnaId"/>
+        <relation type="one" fk-name="QNA_TYP" rel-entity-name="QnaType">
+            <key-map field-name="qnaTypeId"/>
+        </relation>
+        <relation type="one" fk-name="QNA_STTS" rel-entity-name="StatusItem">
+            <key-map field-name="statusId"/>
+        </relation>
+        <relation type="one" fk-name="QNA_USER" rel-entity-name="UserLogin">
+            <key-map field-name="userLoginId" rel-field-name="userLoginId"/>
+        </relation>
+    </entity>
+    <entity entity-name="QnaItem" package-name="org.apache.ofbiz.qna.qna" title="Qna Item Entity">
+        <field name="qnaId" type="id"></field>
+        <field name="qnaItemSeqId" type="id"><description>secondary sequenced ID</description></field>
+        <field name="description" type="description"></field>
+        <field name="amount" type="floating-point"></field>
+        <field name="amountUomId" type="id"></field>
+        <prim-key field="qnaId"/>
+        <prim-key field="qnaItemSeqId"/>
+        <relation type="one" fk-name="QNAIT_UOM" title="Amount" rel-entity-name="Uom">
+            <key-map field-name="amountUomId" rel-field-name="uomId"/>
+        </relation>
+        <relation type="one" fk-name="QNAIT_QNAMP" rel-entity-name="Qna">
+            <key-map field-name="qnaId"/>
+        </relation>
+    </entity>
+    <entity entity-name="QnaStatus" package-name="org.apache.ofbiz.qna.qna" title="Qna Status Entity">
+        <field name="qnaId" type="id"></field>
+        <field name="statusDate" type="date-time"></field>
+        <field name="statusEndDate" type="date-time"></field>
+        <field name="changeByUserLoginId" type="id-vlong"></field>
+        <field name="statusId" type="id"></field>
+        <prim-key field="qnaId"/>
+        <prim-key field="statusDate"/>
+        <relation type="one" fk-name="QNAST_QNA" rel-entity-name="Qna">
+            <key-map field-name="qnaId"/>
+        </relation>
+        <relation type="one" fk-name="QNAST_STTS" rel-entity-name="StatusItem">
+            <key-map field-name="statusId"/>
+        </relation>
+        <relation type="one" fk-name="QNAST_STTS_USER" rel-entity-name="UserLogin">
+            <key-map field-name="changeByUserLoginId" rel-field-name="userLoginId"/>
+        </relation>
+    </entity>
+    <entity entity-name="QnaType"
+            package-name="org.apache.ofbiz.qna.qna"
+            title="Qna Type Entity">
+        <field name="qnaTypeId" type="id"></field>
+        <field name="parentTypeId" type="id"></field>
+        <field name="description" type="description"></field>
+        <prim-key field="qnaTypeId"/>
+        <relation type="one" fk-name="QNATP_PAR" rel-entity-name="QnaType">
+            <key-map field-name="parentTypeId" rel-field-name="qnaTypeId"/>
+        </relation>
+    </entity>
+    <entity entity-name="QnaAnswer" package-name="org.apache.ofbiz.qna.qna" title="Qna Answer Entity">
+        <field name="answerId" type="id"></field>
+        <field name="qnaId" type="id"></field>
+        <field name="comments" type="comment"></field>
+        <prim-key field="answerId"/>
+        <relation type="one" fk-name="QNAANS" rel-entity-name="Qna">
+            <key-map field-name="qnaId"/>
+        </relation>
+    </entity>
+
+    <!-- ========================================================= -->
+    <!-- org.apache.ofbiz.qna.feature -->
+    <!-- ========================================================= -->
+
+    <entity entity-name="QnaFeature"
+        package-name="org.apache.ofbiz.qna.feature"
+        title="Qna Feature Entity">
+        <field name="qnaFeatureId" type="id"><description>primary sequenced ID</description></field>
+        <field name="featureSourceEnumId" type="id"></field>
+        <field name="description" type="description"></field>
+        <prim-key field="qnaFeatureId"/>
+        <relation type="one" fk-name="QNAFT_ENUM" rel-entity-name="Enumeration">
+            <key-map field-name="featureSourceEnumId" rel-field-name="enumId"/>
+        </relation>
+    </entity>
+    <entity entity-name="QnaFeatureAppl"
+        package-name="org.apache.ofbiz.qna.feature"
+        title="Qna Feature Application Entity">
+        <field name="qnaId" type="id"></field>
+        <field name="qnaFeatureId" type="id"></field>
+        <field name="fromDate" type="date-time"></field>
+        <field name="thruDate" type="date-time"></field>
+        <field name="qnaFeatureApplTypeId" type="id"></field>
+        <field name="sequenceNum" type="numeric"></field>
+        <prim-key field="qnaId"/>
+        <prim-key field="qnaFeatureId"/>
+        <prim-key field="fromDate"/>
+        <relation type="one" fk-name="QNAFTAP_QNAPL" rel-entity-name="Qna">
+            <key-map field-name="qnaId"/>
+        </relation>
+        <relation type="one" fk-name="QNAFTAP_QNAFT" rel-entity-name="QnaFeature">
+            <key-map field-name="qnaFeatureId"/>
+        </relation>
+        <relation type="one" fk-name="QNAFTAP_TYP" rel-entity-name="QnaFeatureApplType">
+            <key-map field-name="qnaFeatureApplTypeId"/>
+        </relation>
+    </entity>
+    <entity entity-name="QnaFeatureApplType"
+        package-name="org.apache.ofbiz.qna.feature"
+        title="Qna Feature Application Type Entity">
+        <field name="qnaFeatureApplTypeId" type="id"></field>
+        <field name="parentTypeId" type="id"></field>
+        <field name="description" type="description"></field>
+        <prim-key field="qnaFeatureApplTypeId"/>
+        <relation type="one" fk-name="QNAFTAPTP_PAR" rel-entity-name="QnaFeatureApplType">
+            <key-map field-name="parentTypeId" rel-field-name="qnaFeatureApplTypeId"/>
+        </relation>
+    </entity>
+</entitymodel>

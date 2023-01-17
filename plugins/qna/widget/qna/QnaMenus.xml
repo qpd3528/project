@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<menus xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://ofbiz.apache.org/Widget-Menu" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Menu http://ofbiz.apache.org/dtds/widget-menu.xsd">
+    <menu name="QnaAppBar" title="${uiLabelMap.QnaApplication}" extends="CommonAppBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
+        <menu-item name="QnaMenuItem" title="${uiLabelMap.QnaQna}">
+            <link target="FindQna"/>
+        </menu-item>
+        <menu-item name="QnaFeature" title="${uiLabelMap.QnaFeature}">
+            <link target="FindQnaFeature"/>
+        </menu-item>
+        <menu-item name="FormWidgetQnas" title="${uiLabelMap.QnaFormWidgetQnas}">
+            <link target="FormWidgetQnas"/>
+        </menu-item>
+        <menu-item name="AjaxQna" title="${uiLabelMap.QnaAjaxQnas}">
+            <link target="authview/findQnaAjax"/>
+        </menu-item>
+        <menu-item name="portalPage" parent-portal-page-value="QNA"/>
+        <menu-item name="Dashboard" title="${uiLabelMap.QnaDashboard}" align-style="opposed">
+            <link target="ManagePortalPages" link-type="anchor">
+                <parameter param-name="parentPortalPageId" value="QNA"/>
+            </link>
+        </menu-item>
+        <menu-item name="QnaGeoLocation" title="${uiLabelMap.CommonGeoLocation}">
+            <link target="QnaGeoLocationPointSet1"/>
+        </menu-item>
+        <menu-item name="QnaCharts" title="${uiLabelMap.QnaChart}">
+            <link target="QnaBarChart"/>
+        </menu-item>
+        <menu-item name="QnaCompleteFop" title="${uiLabelMap.ContentFopFonts}">
+                <link target="fonts.pdf" target-window="_BLANK"/>
+        </menu-item>
+        <menu-item name="QnaCompoundWidgets" title="${uiLabelMap.QnaCompoundWidgets}">
+                <link target="CompoundWidgets1"/>
+        </menu-item>
+    </menu>
+
+    <menu name="EditQna" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
+        <menu-item name="EditQna" title="${uiLabelMap.QnaQna}">
+            <link target="EditQna">
+                <parameter param-name="qnaId"/>
+            </link>
+        </menu-item>
+        <menu-item name="EditQnaItems" title="${uiLabelMap.CommonItems}">
+            <link target="EditQnaItems">
+                <parameter param-name="qnaId"/>
+            </link>
+        </menu-item>
+        <menu-item name="EditQnaFeatureAppls" title="${uiLabelMap.QnaFeatures}">
+            <link target="EditQnaFeatureAppls">
+                <parameter param-name="qnaId"/>
+            </link>
+        </menu-item>
+    </menu>
+
+    <menu name="EditQnaFeature" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
+        <menu-item name="EditQnaFeature" title="${uiLabelMap.QnaFeature}">
+            <link target="EditQnaFeature"/>
+        </menu-item>
+        <menu-item name="EditQnaFeatureQnaAppls" title="${uiLabelMap.QnaQnas}">
+            <link target="EditQnaFeatureQnaAppls"/>
+        </menu-item>
+    </menu>
+
+    <menu name="QnaGeoLocation" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
+        <menu-item name="QnaGeoLocationPointSet1" title="${uiLabelMap.PointSet1}"><link target="QnaGeoLocationPointSet1"/></menu-item>
+        <menu-item name="QnaGeoLocationPointSet2" title="${uiLabelMap.PointSet2}"><link target="QnaGeoLocationPointSet2"/></menu-item>
+        <menu-item name="QnaGeoLocationPointSet3" title="${uiLabelMap.PointSet3}"><link target="QnaGeoLocationPointSet3"/></menu-item>
+        <menu-item name="QnaGeoLocationPointSet4" title="${uiLabelMap.PointSet4}"><link target="QnaGeoLocationPointSet4"/></menu-item>
+        <menu-item name="QnaGeoLocationAddress" title="${uiLabelMap.QnaPointAddress}"><link target="QnaGeoLocationAddress"/></menu-item>
+        <!--Qnas using openstreetmap -->
+        <menu-item name="QnaOsmGeoLocationPointSet1" title="${uiLabelMap.OsmPointSet1}"><link target="QnaOsmGeoLocationPointSet1"/></menu-item>
+        <menu-item name="QnaOsmGeoLocationPointSet2" title="${uiLabelMap.OsmPointSet2}"><link target="QnaOsmGeoLocationPointSet2"/></menu-item>
+        <menu-item name="QnaOsmGeoLocationPointSet3" title="${uiLabelMap.OsmPointSet3}"><link target="QnaOsmGeoLocationPointSet3"/></menu-item>
+        <menu-item name="QnaOsmGeoLocationPointSet4" title="${uiLabelMap.OsmPointSet4}"><link target="QnaOsmGeoLocationPointSet4"/></menu-item>
+    </menu>
+
+    <menu name="QnaCharts" extends="CommonTabBarMenu" extends-resource="component://common/widget/CommonMenus.xml">
+        <menu-item name="QnaBarChart" title="${uiLabelMap.QnaBarChart}"><link target="QnaBarChart"/></menu-item>
+        <menu-item name="QnaPieChart" title="${uiLabelMap.QnaPieChart}"><link target="QnaPieChart"/></menu-item>
+    </menu>
+
+</menus>

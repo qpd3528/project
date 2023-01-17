@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/services.xsd">
+    <description>Qna Services</description>
+    <vendor>OFBiz</vendor>
+    <version>1.0</version>
+
+    <!-- Qna & Related Services -->
+    <service name="createQna" default-entity-name="Qna" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a Qna</description>
+        <permission-service service-name="qnaGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="qnaTypeId" optional="false"/>
+        <override name="statusId" optional="false"/>
+        <override name="qnaName" optional="false"/>
+    </service>
+    <service name="updateQna" default-entity-name="Qna" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a Qna</description>
+        <permission-service service-name="qnaGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <attribute name="oldStatusId" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="deleteQna" default-entity-name="Qna" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a Qna</description>
+        <permission-service service-name="qnaGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <service name="createQnaStatus" default-entity-name="QnaStatus" engine="simple"
+            location="component://qna/minilang/qna/QnaServices.xml" invoke="createQnaStatus" auth="true">
+        <description>Create a QnaStatus</description>
+        <permission-service service-name="qnaGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="all" mode="IN" optional="false">
+            <exclude field-name="statusDate"/>
+            <exclude field-name="statusEndDate"/>
+            <exclude field-name="changeByUserLoginId"/>
+        </auto-attributes>
+    </service>
+
+    <service name="createQnaItem" default-entity-name="QnaItem" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a QnaItem</description>
+        <permission-service service-name="qnaGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="qnaItemSeqId" mode="OUT"/> <!-- make this OUT rather than IN, we will automatically generate the next sub-sequence ID -->
+        <override name="description" optional="false"/>
+    </service>
+    <service name="updateQnaItem" default-entity-name="QnaItem" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a QnaItem</description>
+        <permission-service service-name="qnaGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteQnaItem" default-entity-name="QnaItem" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a QnaItem</description>
+        <permission-service service-name="qnaGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <!-- QnaFeature Services -->
+    <service name="createQnaFeature" default-entity-name="QnaFeature" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a QnaFeature</description>
+        <permission-service service-name="qnaGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="description" optional="false"/>
+    </service>
+    <service name="updateQnaFeature" default-entity-name="QnaFeature" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a QnaFeature</description>
+        <permission-service service-name="qnaGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteQnaFeature" default-entity-name="QnaFeature" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a QnaFeature</description>
+        <permission-service service-name="qnaGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <service name="createQnaFeatureAppl" default-entity-name="QnaFeatureAppl" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a QnaFeatureAppl</description>
+        <permission-service service-name="qnaGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="fromDate" optional="true"/>
+    </service>
+    <service name="updateQnaFeatureAppl" default-entity-name="QnaFeatureAppl" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a QnaFeatureAppl</description>
+        <permission-service service-name="qnaGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteQnaFeatureAppl" default-entity-name="QnaFeatureAppl" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a QnaFeatureAppl</description>
+        <permission-service service-name="qnaGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <!-- Permission Services -->
+    <service name="qnaGenericPermission" engine="simple"
+             location="component://qna/minilang/QnaPermissionServices.xml" invoke="qnaGenericPermission">
+        <implements service="permissionInterface"/>
+    </service>
+
+    <!-- Qna ServiceTest Service -->
+    <service name="testCreateQnaService" engine="simple"
+             location="component://qna/minilang/qna/QnaServices.xml" invoke="testCreateQnaService">
+        <implements service="testServiceInterface"/>
+    </service>
+    <!-- Send push notification service -->
+    <service name="sendQnaPushNotifications" engine="java"
+                location="org.apache.ofbiz.qna.QnaServices" invoke="sendQnaPushNotifications" auth="true">
+        <attribute name="qnaId" mode="IN" type="String" optional="true"></attribute>
+        <attribute name="message" mode="IN" type="String" optional="true"></attribute>
+        <attribute name="successMessage" mode="IN" type="String" optional="true"></attribute>
+    </service>
+
+    <!-- QnaType services -->
+    <service name="createQnaType" default-entity-name="QnaType" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a record of QnaType</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <auto-attributes include="pk" mode="INOUT" optional="true"/>
+    </service>
+    <service name="updateQnaType" default-entity-name="QnaType" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a record of QnaType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteQnaType" default-entity-name="QnaType" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a record of QnaType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <!-- QnaFeatureApplType services -->
+    <service name="createQnaFeatureApplType" default-entity-name="QnaFeatureApplType" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a QnaFeatureApplType</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <auto-attributes include="pk" mode="INOUT" optional="true"/>
+    </service>
+    <service name="updateQnaFeatureApplType" default-entity-name="QnaFeatureApplType" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a QnaFeatureApplType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteQnaFeatureApplType" default-entity-name="QnaFeatureApplType" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a QnaFeatureApplType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+</services>

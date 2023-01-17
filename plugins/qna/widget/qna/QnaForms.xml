@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns="http://ofbiz.apache.org/Widget-Form" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <form name="FindQnas" type="single" target="FindQna" default-entity-name="Qna">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="qnaId" title="${uiLabelMap.QnaId}"><text-find/></field>
+        <field name="qnaTitle" title="${uiLabelMap.QnaTitle}"><text-find/></field>
+        <field name="qnaTypeId" title="${uiLabelMap.QnaType}">
+            <drop-down allow-empty="true" current-description="">
+                <entity-options key-field-name="qnaTypeId" entity-name="QnaType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="statusId" title="${uiLabelMap.QnaStatus}">
+            <drop-down allow-empty="true" current-description="">
+                <entity-options key-field-name="statusId" entity-name="QnaStatusItem"/>
+            </drop-down>
+        </field>
+        <field name="userLoginId" title="${uiLabelMap.LoginUser}"><text-find/></field>
+        <field name="appVer" title="${uiLabelMap.AppVer}"><text-find/></field>
+        <field name="osTypeId" title="${uiLabelMap.OsTypeId}">
+            <check>
+                <option key="Android"/>
+                <option key="iOS"/>
+            </check>
+        </field>
+        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdateId}"><text-find/></field>
+        <field name="createdStamp" title="${uiLabelMap.CreatedStamp}"><date-time/></field>
+        <field name="listOtherElements">
+            <radio>
+                <option key="items"/>
+                <option key="features"/>
+                <option key="status"/>
+            </radio>
+        </field>
+        <field name="searchButton"><submit/></field>
+        <field name="exportButton" position="2" widget-style="smallSubmit" title=" ">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonExport}"
+                       target="javascript: document.FindQnas.action='ListQnaExport'; document.FindQnas.submit();"/>
+        </field>
+    </form>
+
+    <grid name="ListQnas" list-name="listIt" paginate-target="FindQna" default-entity-name="Qna" separate-columns="true"
+        odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="qnaCtx"/>
+                <field-map field-name="entityName" value="Qna"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+            <set field="sortField" from-field="parameters.sortField"/>
+        </actions>
+        <alt-row-style use-when="'EXST_APPROVED'.equals(statusId)" style="Validate"/>
+        <alt-row-style use-when="'EXST_CANCELLED'.equals(statusId)" style="Warn"/>
+        <field name="qnaId" title="${uiLabelMap.QnaId}" widget-style="buttontext" sort-field="true">
+            <hyperlink description="${qnaId}" target="EditQna" also-hidden="false">
+                <parameter param-name="qnaId"/>
+            </hyperlink>
+        </field>
+        <field name="qnaTitle" title="${uiLabelMap.QnaTitle}"><display/></field>
+        <field name="qnaTypeId" title="${uiLabelMap.QnaType}" sort-field="true"><display-entity entity-name="QnaType"/></field>
+        <field name="statusId" title="${uiLabelMap.QnaStatus}" sort-field="true"><display-entity entity-name="StatusItem"/></field>
+        <field name="description" title="${uiLabelMap.QnaDescription}"><display/></field>
+        <field name="appVer" title="${uiLabelMap.AppVer}" sort-field="true"><display/></field>
+        <field name="osTypeId" title="${uiLabelMap.OsTypeId}" sort-field="true"><display/></field>
+        <field name="viewOptId" title="${uiLabelMap.ViewOptId}" sort-field="true"><display/></field>
+        <field name="userLoginId" title="${uiLabelMap.LoginUser}"><display/></field>
+        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdateId}"><display default-value="${userLogin.userLoginId}"/></field>
+        <field name="createdStamp" title="${uiLabelMap.CreatedStamp}" sort-field="true"><display/></field>
+        <field name="lastUpdatedStamp" title="${uiLabelMap.LastUpdatedStamp}"><display/></field>
+<!--        <field name="conditionalDesc" ignore-when="&quot;qnaName&quot;.equals(sortField)" title="my desc"><display description="${description}"/></field>-->
+    </grid>
+
+    <!--qna form with include an other form -->
+    <grid name="ListQnasWithFeatures" extends="ListQnas" extends-resource="component://qna/widget/qna/QnaForms.xml">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+        <field name="features"><include-form name="QnaFeaturesInLine" location="component://qna/widget/qna/QnaForms.xml"/></field>
+    </grid>
+    <form name="QnaFeaturesInLine" type="list" default-table-style="basic-table light-grid" default-entity-name="QnaFeatureAppl">
+        <actions>
+            <entity-condition entity-name="QnaFeatureAppl">
+                <condition-expr field-name="qnaId" from-field="qnaId"/>
+                <order-by field-name="sequenceNum"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-entity entity-name="QnaFeatureAppl" default-field-type="display"/>
+        <field name="qnaId"><ignored/></field>
+    </form>
+
+    <!--qna form with include a screen -->
+    <grid name="ListQnasWithItems" extends="ListQnas" extends-resource="component://qna/widget/qna/QnaForms.xml">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+        <field name="items"><include-screen name="QnaItemsInLine" location="component://qna/widget/qna/QnaScreens.xml"/></field>
+    </grid>
+
+    <grid name="ListQnaItemsInLine" default-table-style="basic-table light-grid">
+        <actions>
+            <entity-condition entity-name="QnaItem">
+                <condition-expr field-name="qnaId" from-field="qnaId"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-entity entity-name="QnaItem" default-field-type="display"/>
+        <field name="qnaId"><ignored/></field>
+    </grid>
+
+    <!--qna form with include a grid -->
+    <grid name="ListQnasWithStatus" extends="ListQnas" extends-resource="component://qna/widget/qna/QnaForms.xml">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+        <field name="status"><include-grid name="QnaStatusInLine" location="component://qna/widget/qna/QnaForms.xml"/></field>
+    </grid>
+
+    <grid name="QnaStatusInLine" default-table-style="basic-table light-grid" default-entity-name="QnaStatus">
+        <actions>
+            <entity-condition entity-name="QnaStatus">
+                <condition-expr field-name="qnaId" from-field="qnaId"/>
+                <order-by field-name="statusDate"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-entity entity-name="QnaStatus" default-field-type="display"/>
+        <field name="qnaId"><ignored/></field>
+    </grid>
+
+    <grid name="ListQnaExport" extends="ListQnas" extends-resource="component://qna/widget/qna/QnaForms.xml" paginate="false">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+    </grid>
+
+    <!-- Typically, this extended form wouldn't be necessary. The parent form (ListQnas) would
+        have these attributes.
+         For the Ajax qna we want all qna entities listed, so the we use the entity-condition
+         instead of the performFind service. -->
+    <grid name="ListQnasAjax" extends="ListQnas" paginate-target="authview/findQnaAjax">
+        <actions>
+            <entity-condition entity-name="Qna"><order-by field-name="qnaName"/></entity-condition>
+        </actions>
+        <field name="qnaId" title="${uiLabelMap.QnaId}" widget-style="buttontext">
+            <hyperlink description="${qnaId}" target="EditQnaLayer" also-hidden="false" link-type="layered-modal">
+                <parameter param-name="qnaId"/>
+            </hyperlink>
+        </field>
+        <field name="qnaName" title="${uiLabelMap.CommonName}" id-name="qnaName">
+            <display>
+                <in-place-editor url="/qna/control/updateQna" cancel-control="button" saving-text="Updating..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="qnaId" from-field="qnaId"/>
+                    <field-map field-name="statusId"  from-field="statusId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <field name="description" title="${uiLabelMap.QnaDescription}" id-name="description">
+            <display>
+                <in-place-editor url="/qna/control/updateQna" cancel-control="button" saving-text="Updating..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="qnaId" from-field="qnaId"/>
+                    <field-map field-name="statusId"  from-field="statusId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListQnasAjax" area-target="ListQnaFormOnly"/>
+    </grid>
+
+    <form name="EditQna" type="single" target="updateQna" title="" default-map-name="qna" default-entity-name="Qna">
+        <actions>
+            <entity-one entity-name="StatusItem" value-field="currentStatus" auto-field-map="false">
+                <field-map field-name="statusId" from-field="qna.statusId"/>
+            </entity-one>
+            <set field="anotherText" from-field="qna.anotherText"/>
+        </actions>
+        <alt-target use-when="qna==null" target="createQna"/>
+        <auto-fields-service service-name="updateQna"/>
+        <field use-when="qna!=null" name="qnaId" title="${uiLabelMap.QnaId}"><display/></field>
+        <field use-when="qna==null @and qnaId==null" name="qnaId" title="${uiLabelMap.QnaId}"><ignored/></field>
+        <field use-when="qna==null @and qnaId!=null" name="qnaId" title="${uiLabelMap.QnaId}"><display description="${uiLabelMap.CommonCannotBeFound}: [${qnaId}]" also-hidden="false"/></field>
+        <field name="qnaTypeId" title="${uiLabelMap.CommonType}" id-name="qnaTypeId" required-field="true">
+            <drop-down allow-empty="false">
+                <!-- this is a neat feature, but not good for the type because the user would have to know the possible types in order to enter at least the first letter, so leaving it out by default; just uncomment to enable: <auto-complete/> -->
+                <entity-options entity-name="QnaType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="statusId"  use-when="qna==null" title="${uiLabelMap.QnaStatus}" required-field="true">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="QnaStatusItem"/>
+            </drop-down>
+        </field>
+        <field name="statusId" use-when="qna!=null" title="${uiLabelMap.QnaStatus}" required-field="true">
+            <drop-down allow-empty="false" current="first-in-list" current-description="${currentStatus.description}">
+                <option key="${currentStatus.statusId}" description="${currentStatus.description}"/>
+                <entity-options entity-name="StatusValidChangeToDetail" key-field-name="statusIdTo" description="${transitionName} (${description})">
+                    <entity-constraint name="statusId" env-name="qna.statusId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="qnaName" title="${uiLabelMap.FormFieldTitle_qnaName}" required-field="true"><text /></field>
+        <field name="qnaName" title="${uiLabelMap.FormFieldTitle_qnaName}" required-field="true" widget-style="required"><text placeholder="${uiLabelMap.FormFieldTitle_qnaName}"/></field>
+        <field name="description" title="${uiLabelMap.QnaDescription}"/>
+        <field name="longDescription" title="${uiLabelMap.QnaLongDescription}"/>
+        <field name="anotherText">
+            <drop-down allow-empty="true">
+                <option key="Explicit Option" description="${uiLabelMap.QnaExplicitOption}"/>
+                <entity-options entity-name="QnaType" key-field-name="qnaTypeId">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="displayAnotherText" use-when="anotherText!=null">
+            <display description="${qna.anotherText}"/>
+        </field>
+        <field name="submitButton" use-when="qna==null" title="${uiLabelMap.CommonCreate}"><submit button-type="button"/></field>
+        <field name="submitButton" use-when="qna!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </form>
+
+    <!-- Typically, this extended form wouldn't be necessary. The parent form (EditQna) would
+        have these settings. -->
+    <form name="EditQnaBackgroundSubmit" type="single" extends="EditQna" target="updateQnaAjax">
+        <alt-target use-when="ajaxQna==null" target="createQnaAjax"/>
+        <field name="statusId" use-when="ajaxQna==null" title="${uiLabelMap.QnaStatus}" id-name="statusId">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="QnaStatusItem"/>
+            </drop-down>
+        </field>
+        <on-event-update-area event-type="submit" area-id="ListQnasAjax" area-target="ListQnaFormOnly"/>
+        <!--on-event-update-area event-type="submit" area-id="EditQnaAjax" area-target="CreateQnaFormOnly"/--><!-- JLR: this does not seem to be useful -->
+    </form>
+
+    <!-- QnaItem -->
+    <grid name="ListQnaItems"  list-name="qnaItems"  target="updateQnaItem">
+        <actions>
+            <entity-condition entity-name="QnaItem">
+                <condition-expr field-name="qnaId" from-field="qnaId"/>
+                <order-by field-name="qnaItemSeqId"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service service-name="updateQnaItem"/>
+        <field name="qnaId"><hidden/></field>
+        <field name="qnaItemSeqId" title="${uiLabelMap.CommonItem}"><display/></field>
+        <field name="description"><text size="30"/></field>
+        <field name="amountUomId" title="${uiLabelMap.CommonUom}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="UomAndType" key-field-name="uomId" description="${typeDescription}: ${description} (${abbreviation})">
+                    <entity-order-by field-name="typeDescription"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="deleteLink" title=" " widget-style="buttontext">
+            <hyperlink description="${uiLabelMap.CommonDelete}" target="deleteQnaItem" also-hidden="false" confirmation-message="${uiLabelMap.CommonConfirmDelete}" image-location="${iconsLocation}/delete.png">
+                <parameter param-name="qnaId"/>
+                <parameter param-name="qnaItemSeqId"/>
+            </hyperlink>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </grid>
+
+    <form name="AddQnaItem" type="single" target="createQnaItem" title="">
+        <auto-fields-service service-name="createQnaItem"/>
+        <field name="qnaId"><hidden/></field>
+        <field name="qnaItemSeqId"><ignored/><!-- this will be auto-sequenced --></field>
+        <field name="amountUomId" title="${uiLabelMap.CommonUom}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="UomAndType" key-field-name="uomId" description="${typeDescription}: ${description} (${abbreviation})">
+                    <entity-order-by field-name="typeDescription"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button" request-confirmation="true"/></field>
+    </form>
+
+    <!-- QnaFeatureAppl -->
+    <grid name="ListQnaFeatureAppls"  list-name="qnaFeatureAppls"  target="qna_updateQnaFeatureAppl">
+        <actions>
+            <entity-condition entity-name="QnaFeatureAppl">
+                <condition-expr field-name="qnaId" from-field="qnaId"/>
+                <order-by field-name="sequenceNum"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service service-name="updateQnaFeatureAppl"/>
+        <field name="qnaId"><hidden/></field>
+        <field name="qnaFeatureId" title="${uiLabelMap.QnaFeature}">
+            <display-entity entity-name="QnaFeature">
+                <sub-hyperlink target="EditQnaFeature" description="${qnaFeatureId}" link-style="buttontext">
+                    <parameter param-name="qnaFeatureId"/>
+                </sub-hyperlink>
+            </display-entity>
+        </field>
+        <field name="fromDate"><display/></field>
+        <field name="qnaFeatureApplTypeId" title="${uiLabelMap.CommonType}">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="QnaFeatureApplType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="deleteLink" title=" " widget-style="buttontext">
+            <hyperlink description="${uiLabelMap.CommonDelete}" target="qna_deleteQnaFeatureAppl" also-hidden="false" image-location="${iconsLocation}/delete.png">
+                <parameter param-name="qnaId"/>
+                <parameter param-name="qnaFeatureId"/>
+                <parameter param-name="fromDate"/>
+            </hyperlink>
+        </field>
+    </grid>
+
+    <form name="AddQnaFeatureAppl" type="single" target="qna_createQnaFeatureAppl" title="">
+        <auto-fields-service service-name="createQnaFeatureAppl"/>
+        <field name="qnaId"><hidden/></field>
+        <field name="qnaFeatureId" title="${uiLabelMap.QnaFeature}">
+            <lookup target-form-name="LookupQnaFeature"/>
+        </field>
+        <field name="qnaFeatureApplTypeId" title="${uiLabelMap.CommonType}">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="QnaFeatureApplType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+
+    <form name="SetQnaPdfPassword" type="single" target="QnaReportPdf" title="">
+        <field name="qnaId"><hidden/></field>
+        <field name="ownerPassword" title="${uiLabelMap.PDFOwnerPassword}"><text size="15" maxlength="250"/></field>
+        <field name="userPassword" title="${uiLabelMap.PDFUserPassword}"><text size="15" maxlength="250"/></field>
+        <field name="allowPrint" title="${uiLabelMap.PDFAllowPrint}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowCopyContent" title="${uiLabelMap.PDFAllowCopyContent}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowEditContent" title="${uiLabelMap.PDFAllowEditContent}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowEditAnnotations" title="${uiLabelMap.PDFAllowEditAnnotations}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowFillInForms" title="${uiLabelMap.PDFAllowFillInForms}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowAccessContent" title="${uiLabelMap.PDFAllowAccessContent}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowAssembleDocument" title="${uiLabelMap.PDFAllowAssembleDocument}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowPrintHq" title="${uiLabelMap.PDFAllowPrintHq}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="encrypt-metadata" title="${uiLabelMap.PDFEncryptMetadata}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="encryption-length" title="${uiLabelMap.PDFEncryptionLength}"><text size="15"/></field>
+        <field name="submitButton" title="${uiLabelMap.QnaGeneratePDF}"><submit button-type="button"/></field>
+    </form>
+</forms>
