@@ -68,6 +68,13 @@ under the License.
         </response>
         <response name="error" type="view" value="EditQna"/>
     </request-map>
+    <request-map uri="deleteQna">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="deleteQna"/>
+        <response name="success" type="request-redirect" value="FindQna">
+            <redirect-parameter name="qnaId"/>
+        </response>
+    </request-map>
     <request-map uri="createQnaAjax">
         <security https="true" auth="true"/>
         <event type="service" invoke="createQna"/>

@@ -222,21 +222,37 @@ under the License.
                 </entity-options>
             </drop-down>
         </field>
-        <field name="qnaName" title="${uiLabelMap.FormFieldTitle_qnaName}" required-field="true"><text /></field>
-        <field name="qnaName" title="${uiLabelMap.FormFieldTitle_qnaName}" required-field="true" widget-style="required"><text placeholder="${uiLabelMap.FormFieldTitle_qnaName}"/></field>
+        <field name="qnaTitle" title="${uiLabelMap.FormFieldTitle_qnaTitle}" required-field="true"><text /></field>
+        <field name="qnaTitle" title="${uiLabelMap.FormFieldTitle_qnaTitle}" required-field="true" widget-style="required"><text placeholder="${uiLabelMap.FormFieldTitle_qnaTitle}"/></field>
+        <field name="comments" title="${uiLabelMap.QnaComments}"><text/></field>
+        <field name="qnaImgUrl" title="${uiLabelMap.QnaImgUrl}">
+<!--            <file></file>-->
+        </field>
         <field name="description" title="${uiLabelMap.QnaDescription}"/>
-        <field name="longDescription" title="${uiLabelMap.QnaLongDescription}"/>
-        <field name="anotherText">
-            <drop-down allow-empty="true">
-                <option key="Explicit Option" description="${uiLabelMap.QnaExplicitOption}"/>
-                <entity-options entity-name="QnaType" key-field-name="qnaTypeId">
-                    <entity-order-by field-name="description"/>
-                </entity-options>
-            </drop-down>
+        <field name="qnaAnswerContact" title="${uiLabelMap.QnaAnswerContact}"></field>
+        <field name="appVer" title="${uiLabelMap.AppVer}"></field>
+        <field name="osTypeId" title="${uiLabelMap.OsTypeId}">
+            <radio no-current-selected-key="Android">
+                <option key="Android"/>
+                <option key="iOS"/>
+            </radio>
         </field>
-        <field name="displayAnotherText" use-when="anotherText!=null">
-            <display description="${qna.anotherText}"/>
+        <field name="viewOptId" title="${uiLabelMap.ViewOptId}">
+
         </field>
+        <field name="userLoginId" title="${uiLabelMap.UserLoginId}"><display default-value="${userLogin.userLoginId}"/></field>
+        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdatedId}"><display also-hidden="true"/></field>
+<!--        <field name="anotherText">-->
+<!--            <drop-down allow-empty="true">-->
+<!--                <option key="Explicit Option" description="${uiLabelMap.QnaExplicitOption}"/>-->
+<!--                <entity-options entity-name="QnaType" key-field-name="qnaTypeId">-->
+<!--                    <entity-order-by field-name="description"/>-->
+<!--                </entity-options>-->
+<!--            </drop-down>-->
+<!--        </field>-->
+<!--        <field name="displayAnotherText" use-when="anotherText!=null">-->
+<!--            <display description="${qna.anotherText}"/>-->
+<!--        </field>-->
         <field name="submitButton" use-when="qna==null" title="${uiLabelMap.CommonCreate}"><submit button-type="button"/></field>
         <field name="submitButton" use-when="qna!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
     </form>

@@ -68,16 +68,16 @@
         <value xml:lang="ko">답변 시간</value>
         <value xml:lang="en"></value>
     </property>
-    <property key="">
-        <value xml:lang="ko"></value>
+    <property key="QnaComments">
+        <value xml:lang="ko">문의 내용</value>
         <value xml:lang="en"></value>
     </property>
-    <property key="">
-        <value xml:lang="ko"></value>
+    <property key="QnaImgUrl">
+        <value xml:lang="ko">첨부 파일</value>
         <value xml:lang="en"></value>
     </property>
-    <property key="">
-        <value xml:lang="ko"></value>
+    <property key="QnaAnswerContact">
+        <value xml:lang="ko">답변 받을 연락처</value>
         <value xml:lang="en"></value>
     </property>
     <property key="">
@@ -1142,7 +1142,8 @@
         <value xml:lang="zh-TW">範例日期</value>
     </property>
   <!-- Form Field Labels -->
-    <property key="FormFieldTitle_qnaName">
+    <property key="FormFieldTitle_qnaTitle">
+        <value xml:lang="ko">제목</value>
         <value xml:lang="en">Qna Name</value>
         <value xml:lang="fr">Nom d'exemple</value>
         <value xml:lang="it">Nome Esempio</value>
