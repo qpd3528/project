@@ -71,7 +71,7 @@ under the License.
     <request-map uri="deleteQna">
         <security https="true" auth="true"/>
         <event type="service" invoke="deleteQna"/>
-        <response name="success" type="request-redirect" value="FindQna">
+        <response name="success" type="request-redirect" value="main">
             <redirect-parameter name="qnaId"/>
         </response>
     </request-map>

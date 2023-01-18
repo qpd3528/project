@@ -75,22 +75,27 @@ under the License.
         </actions>
         <alt-row-style use-when="'EXST_APPROVED'.equals(statusId)" style="Validate"/>
         <alt-row-style use-when="'EXST_CANCELLED'.equals(statusId)" style="Warn"/>
-        <field name="qnaId" title="${uiLabelMap.QnaId}" widget-style="buttontext" sort-field="true">
+        <field name="qnaId" title="${uiLabelMap.QnaId}" widget-style="buttontext" sort-field="true"><!--ID-->
             <hyperlink description="${qnaId}" target="EditQna" also-hidden="false">
                 <parameter param-name="qnaId"/>
             </hyperlink>
         </field>
-        <field name="qnaTitle" title="${uiLabelMap.QnaTitle}"><display/></field>
-        <field name="qnaTypeId" title="${uiLabelMap.QnaType}" sort-field="true"><display-entity entity-name="QnaType"/></field>
-        <field name="statusId" title="${uiLabelMap.QnaStatus}" sort-field="true"><display-entity entity-name="StatusItem"/></field>
-        <field name="description" title="${uiLabelMap.QnaDescription}"><display/></field>
-        <field name="appVer" title="${uiLabelMap.AppVer}" sort-field="true"><display/></field>
-        <field name="osTypeId" title="${uiLabelMap.OsTypeId}" sort-field="true"><display/></field>
-        <field name="viewOptId" title="${uiLabelMap.ViewOptId}" sort-field="true"><display/></field>
-        <field name="userLoginId" title="${uiLabelMap.LoginUser}"><display/></field>
-        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdateId}"><display default-value="${userLogin.userLoginId}"/></field>
-        <field name="createdStamp" title="${uiLabelMap.CreatedStamp}" sort-field="true"><display/></field>
-        <field name="lastUpdatedStamp" title="${uiLabelMap.LastUpdatedStamp}"><display/></field>
+        <field name="qnaTitle" title="${uiLabelMap.QnaTitle}"><display/></field><!--제목-->
+        <field name="qnaTypeId" title="${uiLabelMap.QnaType}" sort-field="true"><display-entity entity-name="QnaType"/></field><!--타입-->
+        <field name="statusId" title="${uiLabelMap.QnaStatus}" sort-field="true"><display-entity entity-name="StatusItem"/></field><!--상태-->
+        <field name="description" title="${uiLabelMap.QnaDescription}"><display/></field><!--메모-->
+        <field name="appVer" title="${uiLabelMap.AppVer}" sort-field="true"><display/></field><!--앱 버전-->
+        <field name="osTypeId" title="${uiLabelMap.OsTypeId}" sort-field="true"><display/></field><!--OS 타입-->
+        <field name="viewOptId" title="${uiLabelMap.ViewOptId}" sort-field="true"><display/></field><!--공객여부-->
+        <field name="userLoginId" title="${uiLabelMap.LoginUser}"><display/></field><!--문의 작성자-->
+        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdateId}"><display/></field><!--답변자-->
+        <field name="createdStamp" title="${uiLabelMap.CreatedStamp}" sort-field="true"><display/></field><!--문의시간-->
+        <field name="lastUpdatedStamp" title="${uiLabelMap.LastUpdatedStamp}"><display/></field><!--답변시간-->
+        <field name="deleteQna" title="${uiLabelMap.deleteQna}" widget-style="buttontext"><!--삭제-->
+            <hyperlink description="${uiLabelMap.delete}" target="deleteQna" confirmation-message="${qnaId}를 삭제하시겠습니까?">
+                <parameter param-name="qnaId"/>
+            </hyperlink>
+        </field>
 <!--        <field name="conditionalDesc" ignore-when="&quot;qnaName&quot;.equals(sortField)" title="my desc"><display description="${description}"/></field>-->
     </grid>
 
@@ -237,11 +242,14 @@ under the License.
                 <option key="iOS"/>
             </radio>
         </field>
-        <field name="viewOptId" title="${uiLabelMap.ViewOptId}">
-
+        <field name="viewOptId" title="${uiLabelMap.ViewOptId}"><!--공개 여부-->
+            <radio no-current-selected-key="Y">
+                <option key="Y"/>
+                <option key="N"/>
+            </radio>
         </field>
-        <field name="userLoginId" title="${uiLabelMap.UserLoginId}"><display default-value="${userLogin.userLoginId}"/></field>
-        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdatedId}"><display also-hidden="true"/></field>
+        <field name="userLoginId" title="${uiLabelMap.UserLoginId}"><text read-only="true"/></field><!--문의 작성자-->
+        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdatedId}"><text default-value="${userLogin.userLoginId}" read-only="true"/></field><!--답변자-->
 <!--        <field name="anotherText">-->
 <!--            <drop-down allow-empty="true">-->
 <!--                <option key="Explicit Option" description="${uiLabelMap.QnaExplicitOption}"/>-->
