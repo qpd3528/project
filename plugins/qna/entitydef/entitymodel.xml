@@ -41,18 +41,18 @@ under the License.
 
     <entity entity-name="Qna" package-name="org.apache.ofbiz.qna.qna" title="Qna Entity">
         <field name="qnaId" type="id"><description>primary sequenced ID</description></field>
-        <field name="qnaTypeId" type="id"></field>
-        <field name="statusId" type="id"></field>
-        <field name="qnaTitle" type="name"></field>
-        <field name="comments" type="comment"></field>
-        <field name="qnaImgUrl" type="url"></field>
-        <field name="description" type="description"></field>
-        <field name="qnaAnswerContact" type="name"></field>
-        <field name="appVer" type="name"></field>
-        <field name="osTypeId" type="id"></field>
-        <field name="viewOptId" type="id"></field>
-        <field name="userLoginId" type="id"></field>
-        <field name="lastUpdatedId" type="id"></field>
+        <field name="qnaTypeId" type="id"></field><!--타입-->
+        <field name="statusId" type="id"></field><!--상태-->
+        <field name="qnaTitle" type="name"></field><!--제목-->
+        <field name="comments" type="comment"></field><!--내용-->
+        <field name="qnaImgUrl" type="url"></field><!--첨부 이미지-->
+        <field name="description" type="description"></field><!--메모-->
+        <field name="qnaAnswerContact" type="name"></field><!--답변 받을 연락처-->
+        <field name="appVer" type="name"></field><!--앱 버전-->
+        <field name="osTypeId" type="id"></field><!--OS 타입-->
+        <field name="viewOptId" type="id"></field><!--공개여부-->
+        <field name="userLoginId" type="id"></field><!--문의 작성자-->
+        <field name="lastUpdatedId" type="id"></field><!--답변자-->
         <prim-key field="qnaId"/>
         <relation type="one" fk-name="QNA_TYP" rel-entity-name="QnaType">
             <key-map field-name="qnaTypeId"/>

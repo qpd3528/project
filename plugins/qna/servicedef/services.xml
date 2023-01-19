@@ -25,7 +25,7 @@ under the License.
     <version>1.0</version>
 
     <!-- Qna & Related Services -->
-    <service name="createQna" default-entity-name="Qna" engine="entity-auto" invoke="create" auth="true">
+    <service name="createQna" default-entity-name="Qna" engine="entity-auto" invoke="create" auth="true" export="true" action="POST">
         <description>Create a Qna</description>
         <permission-service service-name="qnaGenericPermission" main-action="CREATE"/>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
