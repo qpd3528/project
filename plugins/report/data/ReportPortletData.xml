@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<entity-engine-xml>
+    <PortalPortlet portalPortletId="REPORT_1" portletName="Report 1" description="Report portlet n. 1"
+        screenName="ReportPortlet1" screenLocation="component://report/widget/report/PortletScreens.xml"
+        editFormName="ReportPortlet1Edit" editFormLocation="component://report/widget/report/PortletEditForms.xml"
+        screenshot="/images/ofbiz_logo.png"/>
+
+    <PortalPortlet portalPortletId="REPORT_2" portletName="Report 2" description="Report portlet n. 2"
+        screenName="ReportPortlet2" screenLocation="component://report/widget/report/PortletScreens.xml"
+        editFormName="ReportPortlet2Edit" editFormLocation="component://report/widget/report/PortletEditForms.xml"
+        screenshot="/images/opentravelsystem_logo.jpg"/>
+
+    <PortalPortlet portalPortletId="REPORT_3" portletName="Report 3" description="Report portlet n. 3"
+        screenName="ReportPortlet3" screenLocation="component://report/widget/report/PortletScreens.xml"
+        editFormName="ReportPortlet3Edit" editFormLocation="component://report/widget/report/PortletEditForms.xml"/>
+
+    <PortletCategory portletCategoryId="REPORT" description="Report Portlet(s)"/>
+    <PortletPortletCategory portalPortletId="REPORT_1" portletCategoryId="REPORT"/>
+    <PortletPortletCategory portalPortletId="REPORT_2" portletCategoryId="REPORT"/>
+    <PortletPortletCategory portalPortletId="REPORT_3" portletCategoryId="REPORT"/>
+</entity-engine-xml>

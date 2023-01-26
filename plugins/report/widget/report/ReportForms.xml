@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xmlns="http://ofbiz.apache.org/Widget-Form" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Form http://ofbiz.apache.org/dtds/widget-form.xsd">
+
+    <form name="FindReports" type="single" target="FindReport" default-entity-name="Report">
+        <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
+        <field name="reportId" title="${uiLabelMap.ReportReportId}"><text-find/></field>
+        <field name="reportName" title="${uiLabelMap.CommonName}"><text-find/></field>
+        <field name="reportTypeId" title="${uiLabelMap.CommonType}">
+            <drop-down allow-empty="true" current-description="">
+                <entity-options key-field-name="reportTypeId" entity-name="ReportType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+            <drop-down allow-empty="true" current-description="">
+                <entity-options key-field-name="statusId" entity-name="ReportStatusItem"/>
+            </drop-down>
+        </field>
+        <field name="listOtherElements">
+            <radio>
+                <option key="items"/>
+                <option key="features"/>
+                <option key="status"/>
+            </radio>
+        </field>
+        <field name="searchButton"><submit/></field>
+        <field name="exportButton" position="2" widget-style="smallSubmit" title=" ">
+            <hyperlink also-hidden="false" target-type="plain" description="${uiLabelMap.CommonExport}"
+                       target="javascript: document.FindReports.action='ListReportExport'; document.FindReports.submit();"/>
+        </field>
+    </form>
+
+    <grid name="ListReports" list-name="listIt" paginate-target="FindReport" default-entity-name="Report" separate-columns="true"
+        odd-row-style="alternate-row" header-row-style="header-row-2" default-table-style="basic-table hover-bar">
+        <actions>
+            <service service-name="performFind" result-map="result" result-map-list="listIt">
+                <field-map field-name="inputFields" from-field="reportCtx"/>
+                <field-map field-name="entityName" value="Report"/>
+                <field-map field-name="orderBy" from-field="parameters.sortField"/>
+                <field-map field-name="viewIndex" from-field="viewIndex"/>
+                <field-map field-name="viewSize" from-field="viewSize"/>
+            </service>
+            <set field="sortField" from-field="parameters.sortField"/>
+        </actions>
+        <alt-row-style use-when="'EXST_APPROVED'.equals(statusId)" style="Validate"/>
+        <alt-row-style use-when="'EXST_CANCELLED'.equals(statusId)" style="Warn"/>
+        <field name="reportId" title="${uiLabelMap.ReportReportId}" widget-style="buttontext">
+            <hyperlink description="${reportId}" target="EditReport" also-hidden="false">
+                <parameter param-name="reportId"/>
+            </hyperlink>
+        </field>
+        <field name="reportName" title="${uiLabelMap.CommonName}" sort-field="true"><display/></field>
+        <field name="reportTypeId" title="${uiLabelMap.CommonType}"><display-entity entity-name="ReportType"/></field>
+        <field name="statusId" title="${uiLabelMap.CommonStatus}"><display-entity entity-name="StatusItem"/></field>
+        <field name="description" title="${uiLabelMap.CommonDescription}" sort-field="true"><display/></field>
+        <field name="conditionalDesc" ignore-when="&quot;reportName&quot;.equals(sortField)" title="my desc"><display description="${description}"/></field>
+    </grid>
+
+    <!--report form with include an other form -->
+    <grid name="ListReportsWithFeatures" extends="ListReports" extends-resource="component://report/widget/report/ReportForms.xml">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+        <field name="features"><include-form name="ReportFeaturesInLine" location="component://report/widget/report/ReportForms.xml"/></field>
+    </grid>
+    <form name="ReportFeaturesInLine" type="list" default-table-style="basic-table light-grid" default-entity-name="ReportFeatureAppl">
+        <actions>
+            <entity-condition entity-name="ReportFeatureAppl">
+                <condition-expr field-name="reportId" from-field="reportId"/>
+                <order-by field-name="sequenceNum"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-entity entity-name="ReportFeatureAppl" default-field-type="display"/>
+        <field name="reportId"><ignored/></field>
+    </form>
+
+    <!--report form with include a screen -->
+    <grid name="ListReportsWithItems" extends="ListReports" extends-resource="component://report/widget/report/ReportForms.xml">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+        <field name="items"><include-screen name="ReportItemsInLine" location="component://report/widget/report/ReportScreens.xml"/></field>
+    </grid>
+
+    <grid name="ListReportItemsInLine" default-table-style="basic-table light-grid">
+        <actions>
+            <entity-condition entity-name="ReportItem">
+                <condition-expr field-name="reportId" from-field="reportId"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-entity entity-name="ReportItem" default-field-type="display"/>
+        <field name="reportId"><ignored/></field>
+    </grid>
+
+    <!--report form with include a grid -->
+    <grid name="ListReportsWithStatus" extends="ListReports" extends-resource="component://report/widget/report/ReportForms.xml">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+        <field name="status"><include-grid name="ReportStatusInLine" location="component://report/widget/report/ReportForms.xml"/></field>
+    </grid>
+
+    <grid name="ReportStatusInLine" default-table-style="basic-table light-grid" default-entity-name="ReportStatus">
+        <actions>
+            <entity-condition entity-name="ReportStatus">
+                <condition-expr field-name="reportId" from-field="reportId"/>
+                <order-by field-name="statusDate"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-entity entity-name="ReportStatus" default-field-type="display"/>
+        <field name="reportId"><ignored/></field>
+    </grid>
+
+    <grid name="ListReportExport" extends="ListReports" extends-resource="component://report/widget/report/ReportForms.xml" paginate="false">
+        <actions>
+            <call-parent-actions/>
+        </actions>
+    </grid>
+
+    <!-- Typically, this extended form wouldn't be necessary. The parent form (ListReports) would
+        have these attributes.
+         For the Ajax report we want all report entities listed, so the we use the entity-condition
+         instead of the performFind service. -->
+    <grid name="ListReportsAjax" extends="ListReports" paginate-target="authview/findReportAjax">
+        <actions>
+            <entity-condition entity-name="Report"><order-by field-name="reportName"/></entity-condition>
+        </actions>
+        <field name="reportId" title="${uiLabelMap.ReportReportId}" widget-style="buttontext">
+            <hyperlink description="${reportId}" target="EditReportLayer" also-hidden="false" link-type="layered-modal">
+                <parameter param-name="reportId"/>
+            </hyperlink>
+        </field>
+        <field name="reportName" title="${uiLabelMap.CommonName}" id-name="reportName">
+            <display>
+                <in-place-editor url="/report/control/updateReport" cancel-control="button" saving-text="Updating..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="reportId" from-field="reportId"/>
+                    <field-map field-name="statusId"  from-field="statusId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <field name="description" title="${uiLabelMap.CommonDescription}" id-name="description">
+            <display>
+                <in-place-editor url="/report/control/updateReport" cancel-control="button" saving-text="Updating..." text-between-controls=" ">
+                    <simple-editor/>
+                    <field-map field-name="reportId" from-field="reportId"/>
+                    <field-map field-name="statusId"  from-field="statusId"/>
+                </in-place-editor>
+            </display>
+        </field>
+        <on-event-update-area event-type="paginate" area-id="ListReportsAjax" area-target="ListReportFormOnly"/>
+    </grid>
+
+    <form name="EditReport" type="single" target="updateReport" title="" default-map-name="report" default-entity-name="Report">
+        <actions>
+            <entity-one entity-name="StatusItem" value-field="currentStatus" auto-field-map="false">
+                <field-map field-name="statusId" from-field="report.statusId"/>
+            </entity-one>
+            <set field="anotherText" from-field="report.anotherText"/>
+        </actions>
+        <alt-target use-when="report==null" target="createReport"/>
+        <auto-fields-service service-name="updateReport"/>
+        <field use-when="report!=null" name="reportId" title="${uiLabelMap.ReportReportId}"><display/></field>
+        <field use-when="report==null @and reportId==null" name="reportId" title="${uiLabelMap.ReportReportId}"><ignored/></field>
+        <field use-when="report==null @and reportId!=null" name="reportId" title="${uiLabelMap.ReportReportId}"><display description="${uiLabelMap.CommonCannotBeFound}: [${reportId}]" also-hidden="false"/></field>
+        <field name="reportTypeId" title="${uiLabelMap.CommonType}" id-name="reportTypeId" required-field="true">
+            <drop-down allow-empty="false">
+                <!-- this is a neat feature, but not good for the type because the user would have to know the possible types in order to enter at least the first letter, so leaving it out by default; just uncomment to enable: <auto-complete/> -->
+                <entity-options entity-name="ReportType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="statusId"  use-when="report==null" title="${uiLabelMap.CommonStatus}" required-field="true">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="ReportStatusItem"/>
+            </drop-down>
+        </field>
+        <field name="statusId" use-when="report!=null" title="${uiLabelMap.CommonStatus}" required-field="true">
+            <drop-down allow-empty="false" current="first-in-list" current-description="${currentStatus.description}">
+                <option key="${currentStatus.statusId}" description="${currentStatus.description}"/>
+                <entity-options entity-name="StatusValidChangeToDetail" key-field-name="statusIdTo" description="${transitionName} (${description})">
+                    <entity-constraint name="statusId" env-name="report.statusId"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="reportName" title="${uiLabelMap.FormFieldTitle_reportName}" required-field="true"><text /></field>
+        <field name="reportName" title="${uiLabelMap.FormFieldTitle_reportName}" required-field="true" widget-style="required"><text placeholder="${uiLabelMap.FormFieldTitle_reportName}"/></field>
+        <field name="description" title="${uiLabelMap.CommonDescription}"/>
+        <field name="longDescription" title="${uiLabelMap.ReportLongDescription}"/>
+        <field name="anotherText">
+            <drop-down allow-empty="true">
+                <option key="Explicit Option" description="${uiLabelMap.ReportExplicitOption}"/>
+                <entity-options entity-name="ReportType" key-field-name="reportTypeId">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="displayAnotherText" use-when="anotherText!=null">
+            <display description="${report.anotherText}"/>
+        </field>
+        <field name="submitButton" use-when="report==null" title="${uiLabelMap.CommonCreate}"><submit button-type="button"/></field>
+        <field name="submitButton" use-when="report!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </form>
+
+    <!-- Typically, this extended form wouldn't be necessary. The parent form (EditReport) would
+        have these settings. -->
+    <form name="EditReportBackgroundSubmit" type="single" extends="EditReport" target="updateReportAjax">
+        <alt-target use-when="ajaxReport==null" target="createReportAjax"/>
+        <field name="statusId" use-when="ajaxReport==null" title="${uiLabelMap.CommonStatus}" id-name="statusId">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="ReportStatusItem"/>
+            </drop-down>
+        </field>
+        <on-event-update-area event-type="submit" area-id="ListReportsAjax" area-target="ListReportFormOnly"/>
+        <!--on-event-update-area event-type="submit" area-id="EditReportAjax" area-target="CreateReportFormOnly"/--><!-- JLR: this does not seem to be useful -->
+    </form>
+
+    <!-- ReportItem -->
+    <grid name="ListReportItems"  list-name="reportItems"  target="updateReportItem">
+        <actions>
+            <entity-condition entity-name="ReportItem">
+                <condition-expr field-name="reportId" from-field="reportId"/>
+                <order-by field-name="reportItemSeqId"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service service-name="updateReportItem"/>
+        <field name="reportId"><hidden/></field>
+        <field name="reportItemSeqId" title="${uiLabelMap.CommonItem}"><display/></field>
+        <field name="description"><text size="30"/></field>
+        <field name="amountUomId" title="${uiLabelMap.CommonUom}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="UomAndType" key-field-name="uomId" description="${typeDescription}: ${description} (${abbreviation})">
+                    <entity-order-by field-name="typeDescription"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="deleteLink" title=" " widget-style="buttontext">
+            <hyperlink description="${uiLabelMap.CommonDelete}" target="deleteReportItem" also-hidden="false" confirmation-message="${uiLabelMap.CommonConfirmDelete}" image-location="${iconsLocation}/delete.png">
+                <parameter param-name="reportId"/>
+                <parameter param-name="reportItemSeqId"/>
+            </hyperlink>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+    </grid>
+
+    <form name="AddReportItem" type="single" target="createReportItem" title="">
+        <auto-fields-service service-name="createReportItem"/>
+        <field name="reportId"><hidden/></field>
+        <field name="reportItemSeqId"><ignored/><!-- this will be auto-sequenced --></field>
+        <field name="amountUomId" title="${uiLabelMap.CommonUom}">
+            <drop-down allow-empty="true">
+                <entity-options entity-name="UomAndType" key-field-name="uomId" description="${typeDescription}: ${description} (${abbreviation})">
+                    <entity-order-by field-name="typeDescription"/>
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button" request-confirmation="true"/></field>
+    </form>
+
+    <!-- ReportFeatureAppl -->
+    <grid name="ListReportFeatureAppls"  list-name="reportFeatureAppls"  target="report_updateReportFeatureAppl">
+        <actions>
+            <entity-condition entity-name="ReportFeatureAppl">
+                <condition-expr field-name="reportId" from-field="reportId"/>
+                <order-by field-name="sequenceNum"/>
+            </entity-condition>
+        </actions>
+        <auto-fields-service service-name="updateReportFeatureAppl"/>
+        <field name="reportId"><hidden/></field>
+        <field name="reportFeatureId" title="${uiLabelMap.ReportFeature}">
+            <display-entity entity-name="ReportFeature">
+                <sub-hyperlink target="EditReportFeature" description="${reportFeatureId}" link-style="buttontext">
+                    <parameter param-name="reportFeatureId"/>
+                </sub-hyperlink>
+            </display-entity>
+        </field>
+        <field name="fromDate"><display/></field>
+        <field name="reportFeatureApplTypeId" title="${uiLabelMap.CommonType}">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="ReportFeatureApplType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>
+        <field name="deleteLink" title=" " widget-style="buttontext">
+            <hyperlink description="${uiLabelMap.CommonDelete}" target="report_deleteReportFeatureAppl" also-hidden="false" image-location="${iconsLocation}/delete.png">
+                <parameter param-name="reportId"/>
+                <parameter param-name="reportFeatureId"/>
+                <parameter param-name="fromDate"/>
+            </hyperlink>
+        </field>
+    </grid>
+
+    <form name="AddReportFeatureAppl" type="single" target="report_createReportFeatureAppl" title="">
+        <auto-fields-service service-name="createReportFeatureAppl"/>
+        <field name="reportId"><hidden/></field>
+        <field name="reportFeatureId" title="${uiLabelMap.ReportFeature}">
+            <lookup target-form-name="LookupReportFeature"/>
+        </field>
+        <field name="reportFeatureApplTypeId" title="${uiLabelMap.CommonType}">
+            <drop-down allow-empty="false">
+                <entity-options entity-name="ReportFeatureApplType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="submitButton" title="${uiLabelMap.CommonAdd}"><submit button-type="button"/></field>
+    </form>
+
+    <form name="SetReportPdfPassword" type="single" target="ReportReportPdf" title="">
+        <field name="reportId"><hidden/></field>
+        <field name="ownerPassword" title="${uiLabelMap.PDFOwnerPassword}"><text size="15" maxlength="250"/></field>
+        <field name="userPassword" title="${uiLabelMap.PDFUserPassword}"><text size="15" maxlength="250"/></field>
+        <field name="allowPrint" title="${uiLabelMap.PDFAllowPrint}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowCopyContent" title="${uiLabelMap.PDFAllowCopyContent}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowEditContent" title="${uiLabelMap.PDFAllowEditContent}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowEditAnnotations" title="${uiLabelMap.PDFAllowEditAnnotations}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowFillInForms" title="${uiLabelMap.PDFAllowFillInForms}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowAccessContent" title="${uiLabelMap.PDFAllowAccessContent}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowAssembleDocument" title="${uiLabelMap.PDFAllowAssembleDocument}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="allowPrintHq" title="${uiLabelMap.PDFAllowPrintHq}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="encrypt-metadata" title="${uiLabelMap.PDFEncryptMetadata}">
+            <drop-down>
+                <option key="true" description="${uiLabelMap.CommonTrue}"/>
+                <option key="false" description="${uiLabelMap.CommonFalse}"/>
+            </drop-down>
+        </field>
+        <field name="encryption-length" title="${uiLabelMap.PDFEncryptionLength}"><text size="15"/></field>
+        <field name="submitButton" title="${uiLabelMap.ReportGeneratePDF}"><submit button-type="button"/></field>
+    </form>
+</forms>

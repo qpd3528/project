@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<screens xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://ofbiz.apache.org/Widget-Screen" xsi:schemaLocation="http://ofbiz.apache.org/Widget-Screen http://ofbiz.apache.org/dtds/widget-screen.xsd">
+
+    <!-- list all reportfeatures in a tabular format -->
+    <screen name="FindReportFeature">
+        <section>
+            <actions>
+                <set field="headerItem" value="ReportFeature"/>
+                <set field="titleProperty" value="PageTitleFindReportFeature"/>
+                <set field="reportFeatureCtx" from-field="parameters"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <section>
+                            <condition>
+                                <if-has-permission permission="REPORT" action="_VIEW"/>
+                            </condition>
+                            <widgets>
+                                <decorator-screen name="FindScreenDecorator" location="component://common/widget/CommonScreens.xml">
+                                    <decorator-section name="menu-bar">
+                                        <container style="button-bar"><link target="EditReportFeature" text="${uiLabelMap.ReportNewReportFeature}" style="buttontext create"/></container>
+                                    </decorator-section>
+                                    <decorator-section name="search-options">
+                                        <include-form name="FindReportFeatures" location="component://report/widget/report/ReportFeatureForms.xml"/>
+                                    </decorator-section>
+                                    <decorator-section name="search-results">
+                                        <include-grid name="ListReportFeatures" location="component://report/widget/report/ReportFeatureForms.xml"/>
+                                    </decorator-section>
+                                </decorator-screen>
+                            </widgets>
+                            <fail-widgets>
+                                <label style="h3">${uiLabelMap.ReportViewPermissionError}</label>
+                            </fail-widgets>
+                        </section>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditReportFeature">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditReportFeature"/>
+                <set field="tabButtonItem" value="EditReportFeature"/>
+                <set field="reportFeatureId" from-field="parameters.reportFeatureId"/>
+                <entity-one entity-name="ReportFeature" value-field="reportFeature"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonReportFeatureDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.ReportFeature}">
+                            <include-form name="EditReportFeature" location="component://report/widget/report/ReportFeatureForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="EditReportFeatureReportAppls">
+        <section>
+            <actions>
+                <set field="titleProperty" value="PageTitleEditReportFeatureReportAppls"/>
+                <set field="tabButtonItem" value="EditReportFeatureReportAppls"/>
+                <set field="reportFeatureId" from-field="parameters.reportFeatureId"/>
+            </actions>
+            <widgets>
+                <decorator-screen name="CommonReportFeatureDecorator" location="${parameters.mainDecoratorLocation}">
+                    <decorator-section name="body">
+                        <screenlet title="${uiLabelMap.ReportFeaturesByReport}">
+                            <include-grid name="ListReportFeatureAppls" location="component://report/widget/report/ReportFeatureForms.xml"/>
+                        </screenlet>
+                        <screenlet title="Add Feature To Report">
+                            <include-form name="AddReportFeatureAppl" location="component://report/widget/report/ReportFeatureForms.xml"/>
+                        </screenlet>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+
+    <screen name="LookupReportFeature">
+        <section>
+            <condition>
+                <if-has-permission permission="REPORT" action="_VIEW"/>
+            </condition>
+            <actions>
+                <property-map resource="ReportUiLabels" map-name="uiLabelMap" global="true"/>
+                <set field="title" from-field="uiLabelMap.PageTitleLookupReportFeature"/>
+                <set field="queryString" from-field="result.queryString"/>
+                <set field="viewIndex" from-field="parameters.VIEW_INDEX" type="Integer"/>
+                <set field="viewSizeDefaultValue" value="${groovy: modelTheme.getDefaultViewSize()}" type="Integer"/>
+                <set field="viewSize" from-field="parameters.VIEW_SIZE" type="Integer" default-value="${viewSizeDefaultValue}"/>
+                
+                <!-- entries needed for lookup ajax auto completer -->
+                <!-- required: entity to search in -->
+                <set field="entityName" value="ReportFeature"/>
+
+                <!-- required: fields to search a match -->
+                <set field="searchFields" value="[reportFeatureId, description]"/>
+                
+                <!-- optional: field to return after user selection, default is first element of searchFields -->
+                <!-- return field might be hidden based on widget.autocompleter.displayReturnField property in widget.properties -->
+                <!--set field="returnField" value="reportFeatureId"/-->
+
+                <!-- optional: fields to display, default are searchFields -->
+                <!--set field="displayFields" value="[reportFeatureId, description]"/-->
+                
+            </actions>
+
+            <widgets>
+                <decorator-screen name="LookupDecorator" location="component://common/widget/CommonScreens.xml">
+                    <decorator-section name="search-options">
+                        <include-form name="LookupFindReportFeature" location="component://report/widget/report/ReportFeatureForms.xml"/>
+                    </decorator-section>
+                    <decorator-section name="search-results">
+                        <include-grid name="LookupListReportFeature" location="component://report/widget/report/ReportFeatureForms.xml"/>
+                    </decorator-section>
+                </decorator-screen>
+            </widgets>
+        </section>
+    </screen>
+</screens>

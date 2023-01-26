@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<services xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/services.xsd">
+    <description>Report Services</description>
+    <vendor>OFBiz</vendor>
+    <version>1.0</version>
+
+    <!-- Report & Related Services -->
+    <service name="createReport" default-entity-name="Report" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a Report</description>
+        <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="reportTypeId" optional="false"/>
+        <override name="statusId" optional="false"/>
+        <override name="reportName" optional="false"/>
+    </service>
+    <service name="updateReport" default-entity-name="Report" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a Report</description>
+        <permission-service service-name="reportGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <attribute name="oldStatusId" type="String" mode="OUT" optional="false"/>
+    </service>
+    <service name="deleteReport" default-entity-name="Report" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a Report</description>
+        <permission-service service-name="reportGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <service name="createReportStatus" default-entity-name="ReportStatus" engine="simple"
+            location="component://report/minilang/report/ReportServices.xml" invoke="createReportStatus" auth="true">
+        <description>Create a ReportStatus</description>
+        <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="all" mode="IN" optional="false">
+            <exclude field-name="statusDate"/>
+            <exclude field-name="statusEndDate"/>
+            <exclude field-name="changeByUserLoginId"/>
+        </auto-attributes>
+    </service>
+
+    <service name="createReportItem" default-entity-name="ReportItem" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a ReportItem</description>
+        <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="reportItemSeqId" mode="OUT"/> <!-- make this OUT rather than IN, we will automatically generate the next sub-sequence ID -->
+        <override name="description" optional="false"/>
+    </service>
+    <service name="updateReportItem" default-entity-name="ReportItem" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a ReportItem</description>
+        <permission-service service-name="reportGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteReportItem" default-entity-name="ReportItem" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a ReportItem</description>
+        <permission-service service-name="reportGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <!-- ReportFeature Services -->
+    <service name="createReportFeature" default-entity-name="ReportFeature" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a ReportFeature</description>
+        <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="description" optional="false"/>
+    </service>
+    <service name="updateReportFeature" default-entity-name="ReportFeature" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a ReportFeature</description>
+        <permission-service service-name="reportGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteReportFeature" default-entity-name="ReportFeature" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a ReportFeature</description>
+        <permission-service service-name="reportGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <service name="createReportFeatureAppl" default-entity-name="ReportFeatureAppl" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a ReportFeatureAppl</description>
+        <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <override name="fromDate" optional="true"/>
+    </service>
+    <service name="updateReportFeatureAppl" default-entity-name="ReportFeatureAppl" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a ReportFeatureAppl</description>
+        <permission-service service-name="reportGenericPermission" main-action="UPDATE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteReportFeatureAppl" default-entity-name="ReportFeatureAppl" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a ReportFeatureAppl</description>
+        <permission-service service-name="reportGenericPermission" main-action="DELETE"/>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <!-- Permission Services -->
+    <service name="reportGenericPermission" engine="simple"
+             location="component://report/minilang/ReportPermissionServices.xml" invoke="reportGenericPermission">
+        <implements service="permissionInterface"/>
+    </service>
+
+    <!-- Report ServiceTest Service -->
+    <service name="testCreateReportService" engine="simple"
+             location="component://report/minilang/report/ReportServices.xml" invoke="testCreateReportService">
+        <implements service="testServiceInterface"/>
+    </service>
+    <!-- Send push notification service -->
+    <service name="sendReportPushNotifications" engine="java"
+                location="org.apache.ofbiz.report.ReportServices" invoke="sendReportPushNotifications" auth="true">
+        <attribute name="reportId" mode="IN" type="String" optional="true"></attribute>
+        <attribute name="message" mode="IN" type="String" optional="true"></attribute>
+        <attribute name="successMessage" mode="IN" type="String" optional="true"></attribute>
+    </service>
+
+    <!-- ReportType services -->
+    <service name="createReportType" default-entity-name="ReportType" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a record of ReportType</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <auto-attributes include="pk" mode="INOUT" optional="true"/>
+    </service>
+    <service name="updateReportType" default-entity-name="ReportType" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a record of ReportType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteReportType" default-entity-name="ReportType" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a record of ReportType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+    <!-- ReportFeatureApplType services -->
+    <service name="createReportFeatureApplType" default-entity-name="ReportFeatureApplType" engine="entity-auto" invoke="create" auth="true">
+        <description>Create a ReportFeatureApplType</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <auto-attributes include="pk" mode="INOUT" optional="true"/>
+    </service>
+    <service name="updateReportFeatureApplType" default-entity-name="ReportFeatureApplType" engine="entity-auto" invoke="update" auth="true">
+        <description>Update a ReportFeatureApplType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteReportFeatureApplType" default-entity-name="ReportFeatureApplType" engine="entity-auto" invoke="delete" auth="true">
+        <description>Delete a ReportFeatureApplType</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+
+</services>

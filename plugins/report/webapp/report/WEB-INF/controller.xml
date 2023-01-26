@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+
+<site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://ofbiz.apache.org/Site-Conf" xsi:schemaLocation="http://ofbiz.apache.org/Site-Conf http://ofbiz.apache.org/dtds/site-conf.xsd">
+    <!-- The controller elements that are common to all OFBiz components
+         can be found in the following xml file. A component can override the
+         elements found in the common-controller.xml file. -->
+    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+    <include location="component://common/webcommon/WEB-INF/portal-controller.xml"/>
+    <include location="component://report/widget/report/ReportCompoundWidgets.xml"/>
+
+    <description>Report Component Site Configuration File</description>
+
+    <!-- Events to run on every request before security (chains exempt) -->
+    <!--
+    <preprocessor>
+    </preprocessor>
+    -->
+    <!-- Events to run on every request after all other processing (chains exempt) -->
+    <!--
+    <postprocessor>
+        <event name="test" type="java" path="org.apache.ofbiz.webapp.event.TestEvent" invoke="test"/>
+    </postprocessor>
+    -->
+
+    <!-- Request Mappings -->
+    <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
+
+    <!-- Report Requests -->
+    <request-map uri="FindReport"><security https="true" auth="true"/><response name="success" type="view" value="FindReport"/></request-map>
+    <request-map uri="EditReport"><security https="true" auth="true"/><response name="success" type="view" value="EditReport"/></request-map>
+    <request-map uri="EditReportLayer"><security https="true" auth="true"/><response name="success" type="view" value="EditReportLayer"/></request-map>
+    <request-map uri="ReportReportHtml"><security https="true" auth="true"/><response name="success" type="view" value="ReportReportHtml"/></request-map>
+    <request-map uri="ReportReportXls"><security https="true" auth="true"/><response name="success" type="view" value="ReportReportXls"/></request-map>
+    <request-map uri="ReportReportPdf"><security https="true" auth="true"/><response name="success" type="view" value="ReportReportPdf"/></request-map>
+    <request-map uri="ListReportExport"><security https="true" auth="true"/><response name="success" type="view" value="ListReportExport"/></request-map>
+    <request-map uri="createReport">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createReport"/>
+        <response name="success" type="request-redirect" value="EditReport">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="FindReport"/>
+    </request-map>
+    <request-map uri="updateReport">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="updateReport"/>
+        <response name="success" type="request-redirect" value="EditReport">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReport"/>
+    </request-map>
+    <request-map uri="createReportAjax">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createReport"/>
+        <response name="success" type="request" value="json"/>
+        <response name="error" type="request" value="json"/>
+    </request-map>
+    <request-map uri="updateReportAjax">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="updateReport"/>
+        <response name="success" type="view" value="findReportAjax"/>
+        <response name="error" type="view" value="findReportAjax"/>
+    </request-map>
+
+    <request-map uri="EditReportItems"><security https="true" auth="true"/><response name="success" type="view" value="EditReportItems"/></request-map>
+    <request-map uri="createReportItem">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createReportItem"/>
+        <response name="success" type="request-redirect" value="EditReportItems">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportItems"/>
+    </request-map>
+    <request-map uri="updateReportItem">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="updateReportItem"/>
+        <response name="success" type="request-redirect" value="EditReportItems">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportItems"/>
+    </request-map>
+    <request-map uri="deleteReportItem">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="deleteReportItem"/>
+        <response name="success" type="request-redirect" value="EditReportItems">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportItems"/>
+    </request-map>
+
+    <request-map uri="EditReportFeatureAppls"><security https="true" auth="true"/><response name="success" type="view" value="EditReportFeatureAppls"/></request-map>
+    <request-map uri="report_createReportFeatureAppl">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createReportFeatureAppl"/>
+        <response name="success" type="request-redirect" value="EditReportFeatureAppls">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeatureAppls"/>
+    </request-map>
+    <request-map uri="report_updateReportFeatureAppl">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="updateReportFeatureAppl"/>
+        <response name="success" type="request-redirect" value="EditReportFeatureAppls">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeatureAppls"/>
+    </request-map>
+    <request-map uri="report_deleteReportFeatureAppl">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="deleteReportFeatureAppl"/>
+        <response name="success" type="request-redirect" value="EditReportFeatureAppls">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeatureAppls"/>
+    </request-map>
+
+    <!-- ReportFeature Requests -->
+    <request-map uri="FindReportFeature"><security https="true" auth="true"/><response name="success" type="view" value="FindReportFeature"/></request-map>
+    <request-map uri="EditReportFeature"><security https="true" auth="true"/><response name="success" type="view" value="EditReportFeature"/></request-map>
+    <request-map uri="createReportFeature">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createReportFeature"/>
+        <response name="success" type="request-redirect" value="EditReportFeature">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeature"/>
+    </request-map>
+    <request-map uri="updateReportFeature">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="updateReportFeature"/>
+        <response name="success" type="request-redirect" value="EditReportFeature">
+            <redirect-parameter name="reportFeatureId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeature"/>
+    </request-map>
+
+    <request-map uri="EditReportFeatureReportAppls"><security https="true" auth="true"/><response name="success" type="view" value="EditReportFeatureReportAppls"/></request-map>
+    <request-map uri="feature_createReportFeatureAppl">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="createReportFeatureAppl"/>
+        <response name="success" type="request-redirect" value="EditReportFeatureReportAppls">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeatureReportAppls"/>
+    </request-map>
+    <request-map uri="feature_updateReportFeatureAppl">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="updateReportFeatureAppl"/>
+        <response name="success" type="request-redirect" value="EditReportFeatureReportAppls">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeatureReportAppls"/>
+    </request-map>
+    <request-map uri="feature_deleteReportFeatureAppl">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="deleteReportFeatureAppl"/>
+        <response name="success" type="request-redirect" value="EditReportFeatureReportAppls">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="EditReportFeatureReportAppls"/>
+    </request-map>
+    <request-map uri="findReportFeatures">
+        <security https="true" auth="true"/>
+        <event type="groovy" path="component://report/groovyScripts/FindReportFeatures.groovy"/>
+        <response name="success" type="view" value="ajaxAutocompleteOptions"/>
+        <response name="error" type="view" value="ajaxAutocompleteOptions"/>
+    </request-map>
+
+    <request-map uri="FormWidgetReports"><security https="true" auth="true"/><response name="success" type="view" value="FormWidgetReports"/></request-map>
+
+    <request-map uri="LookupReportFeature"><security https="true" auth="true"/><response name="success" type="view" value="LookupReportFeature"/></request-map>
+    <request-map uri="LookupPartyGroupByName"><security https="true" auth="true"/><response name="success" type="view" value="LookupPartyGroupByName"/></request-map>
+
+    <request-map uri="ListReportFormOnly"><security https="true" auth="false"/><response name="success" type="view" value="ListReportFormOnly"/></request-map>
+    <request-map uri="CreateReportFormOnly"><security https="true" auth="false"/><response name="success" type="view" value="CreateReportFormOnly"/></request-map>
+
+    <request-map uri="printReportFOPFonts">
+      <security https="true" auth="true"/>
+      <response name="success" type="view" value="printReportFOPFonts"/>
+    </request-map>
+    
+    <request-map uri="fonts.pdf">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="fonts.fo"/>
+    </request-map>
+
+    <request-map uri="views">
+        <security https="true" auth="false"/>
+        <response name="success" type="request" value="main"/>
+    </request-map>
+
+    <request-map uri="ReportGeoLocationPointSet1"><security https="true" auth="true"/><response name="success" type="view" value="ReportGeoLocationPointSet1"/></request-map>
+    <request-map uri="ReportGeoLocationPointSet2"><security https="true" auth="true"/><response name="success" type="view" value="ReportGeoLocationPointSet2"/></request-map>
+    <request-map uri="ReportGeoLocationPointSet3"><security https="true" auth="true"/><response name="success" type="view" value="ReportGeoLocationPointSet3"/></request-map>
+    <request-map uri="ReportGeoLocationPointSet4"><security https="true" auth="true"/><response name="success" type="view" value="ReportGeoLocationPointSet4"/></request-map>
+    <request-map uri="ReportGeoLocationAddress"><security https="true" auth="true"/><response name="success" type="view" value="ReportGeoLocationAddress"/></request-map>
+    <request-map uri="ReportOsmGeoLocationPointSet1"><security https="true" auth="true"/><response name="success" type="view" value="ReportOsmGeoLocationPointSet1"/></request-map>
+    <request-map uri="ReportOsmGeoLocationPointSet2"><security https="true" auth="true"/><response name="success" type="view" value="ReportOsmGeoLocationPointSet2"/></request-map>
+    <request-map uri="ReportOsmGeoLocationPointSet3"><security https="true" auth="true"/><response name="success" type="view" value="ReportOsmGeoLocationPointSet3"/></request-map>
+    <request-map uri="ReportOsmGeoLocationPointSet4"><security https="true" auth="true"/><response name="success" type="view" value="ReportOsmGeoLocationPointSet4"/></request-map>
+    
+    <!--flot report requests-->
+    <request-map uri="ReportBarChart">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ReportBarChart"/>
+    </request-map>
+    <request-map uri="ReportPieChart">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ReportPieChart"/>
+    </request-map>
+    
+    <!-- Pdf Report Options -->
+    <request-map uri="ReportReportPdfOptions">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ReportReportPdfOptions"/>
+    </request-map>
+    
+    <!-- Barcode/QRCode report requests -->
+    <request-map uri="ReportReportPdfBarcode">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="ReportReportPdfBarcode"/>
+    </request-map>
+    
+    <!-- end of request mappings -->
+
+    <!-- View Mappings -->
+    <view-map name="main" type="screen" page="component://report/widget/report/CommonScreens.xml#main"/>
+
+    <view-map name="FindReport" type="screen" page="component://report/widget/report/ReportScreens.xml#FindReport"/>
+    <view-map name="EditReport" type="screen" page="component://report/widget/report/ReportScreens.xml#EditReport"/>
+    <view-map name="EditReportLayer" type="screen" page="component://report/widget/report/ReportScreens.xml#EditReportLayer"/>
+    <view-map name="EditReportItems" type="screen" page="component://report/widget/report/ReportScreens.xml#EditReportItems"/>
+    <view-map name="EditReportFeatureAppls" type="screen" page="component://report/widget/report/ReportScreens.xml#EditReportFeatureAppls"/>
+    <view-map name="ListReportExport" type="screenxls" page="component://report/widget/report/ReportScreens.xml#ListReportExport" content-type="application/vnd.ms-excel"/>
+    <view-map name="ReportReportHtml" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportReport"/>
+    <view-map name="ReportReportXls" type="screenxls" page="component://report/widget/report/ReportScreens.xml#ReportReport" content-type="application/vnd.ms-excel"/>
+    <view-map name="ReportReportPdf" type="screenfop" page="component://report/widget/report/ReportScreens.xml#ReportReport" content-type="application/pdf" encoding="none"/>
+    <view-map name="ReportReportPdfBarcode" type="screenfop" page="component://report/widget/report/ReportScreens.xml#ReportReportPdfBarcode" content-type="application/pdf" encoding="none"/>
+
+    <view-map name="FindReportFeature" type="screen" page="component://report/widget/report/ReportFeatureScreens.xml#FindReportFeature"/>
+    <view-map name="EditReportFeature" type="screen" page="component://report/widget/report/ReportFeatureScreens.xml#EditReportFeature"/>
+    <view-map name="EditReportFeatureReportAppls" type="screen" page="component://report/widget/report/ReportFeatureScreens.xml#EditReportFeatureReportAppls"/>
+
+    <view-map name="FormWidgetReports" type="screen" page="component://report/widget/report/FormWidgetReportScreens.xml#FormWidgetReports"/>
+
+    <view-map name="LookupReportFeature" type="screen" page="component://report/widget/report/ReportFeatureScreens.xml#LookupReportFeature"/>
+    <view-map name="LookupPartyGroupByName" type="screen" page="component://report/widget/report/FormWidgetReportLookupScreens.xml#LookupPartyGroupByName"/>
+
+    <!-- ajax view mappings -->
+    <view-map name="findReportAjax" type="screen" page="component://report/widget/report/ReportAjaxScreens.xml#AjaxReport"/>
+    <view-map name="ListReportFormOnly" type="screen" page="component://report/widget/report/ReportAjaxScreens.xml#ListReportFormOnly"/>
+    <view-map name="CreateReportFormOnly" type="screen" page="component://report/widget/report/ReportAjaxScreens.xml#CreateReportFormOnly"/>
+    <view-map name="printReportFOPFonts" type="screenfop" page="component://report/widget/report/FormWidgetReportScreens.xml#printReportFOPFonts" content-type="application/pdf"  encoding="none"/>
+
+    <view-map name="ReportGeoLocationPointSet1" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportGeoLocationPointSet1"/>
+    <view-map name="ReportGeoLocationPointSet2" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportGeoLocationPointSet2"/>
+    <view-map name="ReportGeoLocationPointSet3" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportGeoLocationPointSet3"/>
+    <view-map name="ReportGeoLocationPointSet4" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportGeoLocationPointSet4"/>
+    <view-map name="ReportGeoLocationAddress" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportGeoLocationAddress"/>
+    <view-map name="ReportOsmGeoLocationPointSet1" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportOsmGeoLocationPointSet1"/>
+    <view-map name="ReportOsmGeoLocationPointSet2" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportOsmGeoLocationPointSet2"/>
+    <view-map name="ReportOsmGeoLocationPointSet3" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportOsmGeoLocationPointSet3"/>
+    <view-map name="ReportOsmGeoLocationPointSet4" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportOsmGeoLocationPointSet4"/>
+
+    <!-- Flot view mapping -->
+    <view-map name="ReportBarChart" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportBarChart"/>
+    <view-map name="ReportPieChart" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportPieChart"/>
+    
+    <!--  content FOP report -->
+    <view-map name="fonts.fo" type="screenfop" page="component://content/widget/CommonScreens.xml#fonts.fo" content-type="application/pdf" encoding="none"/>
+
+    <!-- Supported Content Types -->
+    <!--
+        text/html
+        application/pdf
+        application/postscript
+        application/vnd.ms-excel
+        application/vnd.ms-word
+        application/vnd.ms-powerpoint
+        application/vnd.oasis.opendocument.text
+        application/vnd.oasis.opendocument.spreadsheet
+        application/vnd.oasis.opendocument.presentation
+        application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        application/vnd.openxmlformats-officedocument.presentationml.presentation
+     -->
+
+    <view-map name="ReportReportPdfOptions" type="screen" page="component://report/widget/report/ReportScreens.xml#ReportReportPdfOptions"/>
+    <!-- end of view mappings -->
+</site-conf>
