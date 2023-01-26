@@ -91,8 +91,8 @@ under the License.
         <field name="lastUpdatedId" title="${uiLabelMap.LastUpdateId}"><display/></field><!--답변자-->
         <field name="createdStamp" title="${uiLabelMap.CreatedStamp}" sort-field="true"><display/></field><!--문의시간-->
         <field name="lastUpdatedStamp" title="${uiLabelMap.LastUpdatedStamp}"><display/></field><!--답변시간-->
-        <field name="deleteQna" title="${uiLabelMap.deleteQna}" widget-style="buttontext"><!--삭제-->
-            <hyperlink description="${uiLabelMap.delete}" target="deleteQna" confirmation-message="${qnaId}를 삭제하시겠습니까?">
+        <field name="deleteQna" title="${uiLabelMap.DeleteQna}" widget-style="buttontext"><!--삭제-->
+            <hyperlink description="${uiLabelMap.Delete}" target="deleteQna" confirmation-message="${qnaId}를 삭제하시겠습니까?">
                 <parameter param-name="qnaId"/>
             </hyperlink>
         </field>

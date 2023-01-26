@@ -68,6 +68,14 @@ under the License.
         </response>
         <response name="error" type="view" value="EditReport"/>
     </request-map>
+    <request-map uri="deleteReport">
+        <security https="true" auth="true"/>
+        <event type="service" invoke="deleteReport"/>
+        <response name="success" type="request-redirect" value="FindReport">
+            <redirect-parameter name="reportId"/>
+        </response>
+        <response name="error" type="view" value="FindReport"/>
+    </request-map>
     <request-map uri="createReportAjax">
         <security https="true" auth="true"/>
         <event type="service" invoke="createReport"/>

@@ -53,13 +53,13 @@ under the License.
     <Enumeration description="Partner" enumCode="PARTNER" enumId="EXFTSRC_PARTNER" sequenceId="02" enumTypeId="EXMPL_FEAT_SOURCE"/>
     <Enumeration description="Employee" enumCode="EMPLOYEE" enumId="EXFTSRC_EMPLOYEE" sequenceId="03" enumTypeId="EXMPL_FEAT_SOURCE"/>
 
-    <Report reportId="EX01" reportTypeId="SPAM" statusId="REPORT_ACCEPTED"/>
-    <Report reportId="EX02" reportTypeId="SPAM" statusId="REPORT_IN_PROGRESS"/>
-    <Report reportId="EX03" reportTypeId="PORNOGRAPHY" statusId="REPORT_IN_PROGRESS"/>
-    <Report reportId="EX04" reportTypeId="PORNOGRAPHY" statusId="REPORT_ACCEPTED"/>
-    <Report reportId="EX05" reportTypeId="ILLEGAL_INFO" statusId="REPORT_COMPLETED"/>
-    <Report reportId="EX06" reportTypeId="ILLEGAL_INFO" statusId="REPORT_COMPLETED"/>
-    <Report reportId="EX07" reportTypeId="HARMFUL_TO_CHILD" statusId="REPORT_ACCEPTED"/>
+    <Report reportId="EX01" reportTypeId="SPAM" statusId="REPORT_ACCEPTED" reportTargetTypeId="USER"/>
+    <Report reportId="EX02" reportTypeId="SPAM" statusId="REPORT_IN_PROGRESS" reportTargetTypeId="TALK"/>
+    <Report reportId="EX03" reportTypeId="PORNOGRAPHY" statusId="REPORT_IN_PROGRESS" reportTargetTypeId="MESSAGE"/>
+    <Report reportId="EX04" reportTypeId="PORNOGRAPHY" statusId="REPORT_ACCEPTED" reportTargetTypeId="STORY"/>
+    <Report reportId="EX05" reportTypeId="ILLEGAL_INFO" statusId="REPORT_COMPLETED" reportTargetTypeId="COMMENT"/>
+    <Report reportId="EX06" reportTypeId="ILLEGAL_INFO" statusId="REPORT_COMPLETED" reportTargetTypeId="COMMUNITY"/>
+    <Report reportId="EX07" reportTypeId="HARMFUL_TO_CHILD" statusId="REPORT_ACCEPTED" reportTargetTypeId="AD_ECOM"/>
     <Report reportId="EX08" reportTypeId="HARMFUL_TO_CHILD" statusId="REPORT_COMPLETED"/>
     <Report reportId="EX09" reportTypeId="ABUSIVE_AVERSION" statusId="REPORT_COMPLETED"/>
     <Report reportId="EX10"  reportTypeId="VIOLENT" statusId="REPORT_COMPLETED"/>
@@ -80,16 +80,16 @@ under the License.
     </delete>
     <Report reportId="EX10"/>
 
-    <ReportItem reportId="EX01" reportItemSeqId="00001" description="EX1-001" amount="10"/>
-    <ReportItem reportId="EX01" reportItemSeqId="00002" description="EX1-002" amount="20"/>
-    <ReportItem reportId="EX02" reportItemSeqId="00001" description="EX2-001" amount="10"/>
-    <ReportItem reportId="EX02" reportItemSeqId="00002" description="EX2-002" amount="20"/>
-    <ReportItem reportId="EX02" reportItemSeqId="00003" description="EX2-003" amount="30"/>
+<!--    <ReportItem reportId="EX01" reportItemSeqId="00001" description="EX1-001" amount="10"/>-->
+<!--    <ReportItem reportId="EX01" reportItemSeqId="00002" description="EX1-002" amount="20"/>-->
+<!--    <ReportItem reportId="EX02" reportItemSeqId="00001" description="EX2-001" amount="10"/>-->
+<!--    <ReportItem reportId="EX02" reportItemSeqId="00002" description="EX2-002" amount="20"/>-->
+<!--    <ReportItem reportId="EX02" reportItemSeqId="00003" description="EX2-003" amount="30"/>-->
 
-    <ReportStatus reportId="EX01" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="EXST_IN_DESIGN"/>
-    <ReportStatus reportId="EX01" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="EXST_DEFINED"/>
-    <ReportStatus reportId="EX01" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="EXST_APPROVED"/>
-    <ReportStatus reportId="EX02" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="EXST_IN_DESIGN"/>
-    <ReportStatus reportId="EX02" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="EXST_DEFINED"/>
-    <ReportStatus reportId="EX02" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="EXST_APPROVED"/>
+<!--    <ReportStatus reportId="EX01" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="REPORT_ACCEPTED"/>-->
+<!--    <ReportStatus reportId="EX01" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="REPORT_IN_PROGRESS"/>-->
+<!--    <ReportStatus reportId="EX01" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="REPORT_COMPLETED"/>-->
+<!--    <ReportStatus reportId="EX02" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="REPORT_ACCEPTED"/>-->
+<!--    <ReportStatus reportId="EX02" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="REPORT_IN_PROGRESS"/>-->
+<!--    <ReportStatus reportId="EX02" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="REPORT_COMPLETED"/>-->
 </entity-engine-xml>

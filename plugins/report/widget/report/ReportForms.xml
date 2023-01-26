@@ -23,19 +23,33 @@ under the License.
 
     <form name="FindReports" type="single" target="FindReport" default-entity-name="Report">
         <field name="noConditionFind"><hidden value="Y"/><!-- if this isn't there then with all fields empty no query will be done --></field>
-        <field name="reportId" title="${uiLabelMap.ReportReportId}"><text-find/></field>
-        <field name="reportName" title="${uiLabelMap.CommonName}"><text-find/></field>
-        <field name="reportTypeId" title="${uiLabelMap.CommonType}">
+        <field name="reportId" title="${uiLabelMap.ReportId}"><text-find/></field>
+        <field name="targetUserLoginId" title="${uiLabelMap.TargetUserLoginId}"><text-find/></field>
+        <field name="userLoginId" title="${uiLabelMap.UserLoginId}"><text-find/></field>
+        <field name="reportTypeId" title="${uiLabelMap.ReportType}">
             <drop-down allow-empty="true" current-description="">
                 <entity-options key-field-name="reportTypeId" entity-name="ReportType">
                     <entity-order-by field-name="description"/>
                 </entity-options>
             </drop-down>
         </field>
-        <field name="statusId" title="${uiLabelMap.CommonStatus}">
+        <field name="reportTargetTypeId" title="${uiLabelMap.ReportTargetType}">
+            <drop-down allow-empty="true">
+                <entity-options key-field-name="reportTargetTypeId" entity-name="ReportTargetType">
+                    <entity-order-by field-name="description"/>
+                </entity-options>
+            </drop-down>
+        </field>
+        <field name="statusId" title="${uiLabelMap.ReportStatus}">
             <drop-down allow-empty="true" current-description="">
                 <entity-options key-field-name="statusId" entity-name="ReportStatusItem"/>
             </drop-down>
+        </field>
+        <field name="guiltyYn" title="${uiLabelMap.GuiltyYn}">
+            <check>
+                <option key="Y"/>
+                <option key="N"/>
+            </check>
         </field>
         <field name="listOtherElements">
             <radio>
@@ -65,16 +79,25 @@ under the License.
         </actions>
         <alt-row-style use-when="'EXST_APPROVED'.equals(statusId)" style="Validate"/>
         <alt-row-style use-when="'EXST_CANCELLED'.equals(statusId)" style="Warn"/>
-        <field name="reportId" title="${uiLabelMap.ReportReportId}" widget-style="buttontext">
+        <field name="reportId" title="${uiLabelMap.ReportId}" widget-style="buttontext" sort-field="true">
             <hyperlink description="${reportId}" target="EditReport" also-hidden="false">
                 <parameter param-name="reportId"/>
             </hyperlink>
         </field>
-        <field name="reportName" title="${uiLabelMap.CommonName}" sort-field="true"><display/></field>
-        <field name="reportTypeId" title="${uiLabelMap.CommonType}"><display-entity entity-name="ReportType"/></field>
-        <field name="statusId" title="${uiLabelMap.CommonStatus}"><display-entity entity-name="StatusItem"/></field>
-        <field name="description" title="${uiLabelMap.CommonDescription}" sort-field="true"><display/></field>
-        <field name="conditionalDesc" ignore-when="&quot;reportName&quot;.equals(sortField)" title="my desc"><display description="${description}"/></field>
+        <field name="reportTypeId" title="${uiLabelMap.ReportType}" sort-field="true"><display-entity entity-name="ReportType"/></field><!--신고 항목-->
+        <field name="reportTargetTypeId" title="${uiLabelMap.ReportTargetType}" sort-field="true"><display-entity entity-name="ReportTargetType"/></field><!--신고 대상-->
+        <field name="statusId" title="${uiLabelMap.ReportStatus}" sort-field="true"><display-entity entity-name="StatusItem"/></field><!--신고 상태-->
+        <field name="targetUserLoginId" title="${uiLabelMap.TargetUserLoginId}"><display/></field><!--신고받은 유저-->
+        <field name="userLoginId" title="${uiLabelMap.UserLoginId}"><display/></field><!--신고자-->
+        <field name="guiltyYn" title="${uiLabelMap.GuiltyYn}" sort-field="true"><display/></field><!--징계 여부-->
+        <field name="lastUpdatedId" title="${uiLabelMap.LastUpdateId}"><display/></field><!--답변자-->
+        <field name="createdStamp" title="${uiLabelMap.CreatedStamp}" sort-field="true"><display/></field><!--신고시간-->
+        <field name="lastUpdatedStamp" title="${uiLabelMap.LastUpdatedStamp}"><display/></field><!--답변시간-->
+        <field name="deleteReport" title="${uiLabelMap.deleteReport}" widget-style="buttontext"><!--삭제-->
+            <hyperlink description="${uiLabelMap.Delete}" target="deleteReport" confirmation-message="${reportId}를 삭제하시겠습니까?">
+                <parameter param-name="reportId"/>
+            </hyperlink>
+        </field>
     </grid>
 
     <!--report form with include an other form -->

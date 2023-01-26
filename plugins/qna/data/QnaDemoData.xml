@@ -71,16 +71,16 @@ under the License.
     </delete>
     <Qna qnaId="EX10" qnaTitle="Qna 10 after update"/>
 
-    <QnaItem qnaId="EX01" qnaItemSeqId="00001" description="EX1-001" amount="10"/>
-    <QnaItem qnaId="EX01" qnaItemSeqId="00002" description="EX1-002" amount="20"/>
-    <QnaItem qnaId="EX02" qnaItemSeqId="00001" description="EX2-001" amount="10"/>
-    <QnaItem qnaId="EX02" qnaItemSeqId="00002" description="EX2-002" amount="20"/>
-    <QnaItem qnaId="EX02" qnaItemSeqId="00003" description="EX2-003" amount="30"/>
+<!--    <QnaItem qnaId="EX01" qnaItemSeqId="00001" description="EX1-001" amount="10"/>-->
+<!--    <QnaItem qnaId="EX01" qnaItemSeqId="00002" description="EX1-002" amount="20"/>-->
+<!--    <QnaItem qnaId="EX02" qnaItemSeqId="00001" description="EX2-001" amount="10"/>-->
+<!--    <QnaItem qnaId="EX02" qnaItemSeqId="00002" description="EX2-002" amount="20"/>-->
+<!--    <QnaItem qnaId="EX02" qnaItemSeqId="00003" description="EX2-003" amount="30"/>-->
 
-    <QnaStatus qnaId="EX01" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="QNA_ACCEPTED"/>
-    <QnaStatus qnaId="EX01" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="QNA_IN_PROGRESS"/>
-    <QnaStatus qnaId="EX01" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="QNA_COMPLETED"/>
-    <QnaStatus qnaId="EX02" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="QNA_ACCEPTED"/>
-    <QnaStatus qnaId="EX02" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="QNA_IN_PROGRESS"/>
-    <QnaStatus qnaId="EX02" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="QNA_COMPLETED"/>
+<!--    <QnaStatus qnaId="EX01" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="QNA_ACCEPTED"/>-->
+<!--    <QnaStatus qnaId="EX01" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="QNA_IN_PROGRESS"/>-->
+<!--    <QnaStatus qnaId="EX01" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="QNA_COMPLETED"/>-->
+<!--    <QnaStatus qnaId="EX02" statusDate="2010-01-02 00:00:00" statusEndDate="2011-01-02 00:00:00" statusId="QNA_ACCEPTED"/>-->
+<!--    <QnaStatus qnaId="EX02" statusDate="2011-01-02 00:00:01" statusEndDate="2012-01-02 00:00:00" statusId="QNA_IN_PROGRESS"/>-->
+<!--    <QnaStatus qnaId="EX02" statusDate="2012-01-02 00:00:00" statusEndDate="2013-01-02 00:00:00" statusId="QNA_COMPLETED"/>-->
 </entity-engine-xml>

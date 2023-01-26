@@ -80,11 +80,11 @@
         <value xml:lang="ko">답변 받을 연락처</value>
         <value xml:lang="en"></value>
     </property>
-    <property key="deleteQna">
+    <property key="DeleteQna">
         <value xml:lang="ko">문의 삭제</value>
         <value xml:lang="en"></value>
     </property>
-    <property key="delete">
+    <property key="Delete">
         <value xml:lang="ko">삭제</value>
         <value xml:lang="en"></value>
     </property>

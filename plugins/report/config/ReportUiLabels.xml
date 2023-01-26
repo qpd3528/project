@@ -19,6 +19,68 @@
     under the License.
 -->
 <resource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://ofbiz.apache.org/dtds/ofbiz-properties.xsd">
+
+    <property key="ReportId">
+        <value xml:lang="ko">신고 ID</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="ReportType">
+        <value xml:lang="ko">신고 항목</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="ReportTargetType">
+        <value xml:lang="ko">신고 대상</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="ReportStatus">
+        <value xml:lang="ko">신고 처리 상태</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="GuiltyYn">
+        <value xml:lang="ko">징계 여부</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="TargetUserLoginId">
+        <value xml:lang="ko">신고된 유저 ID</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="UserLoginId">
+        <value xml:lang="ko">신고자 ID</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="LastUpdateId">
+        <value xml:lang="ko">답변자</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="CreatedStamp">
+        <value xml:lang="ko">신고 시간</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="LastUpdatedStamp">
+        <value xml:lang="ko">답변 시간</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="deleteReport">
+        <value xml:lang="ko">신고 삭제</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="Delete">
+        <value xml:lang="ko">삭제</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="">
+        <value xml:lang="ko"></value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="">
+        <value xml:lang="ko"></value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="">
+        <value xml:lang="ko"></value>
+        <value xml:lang="en"></value>
+    </property>
+
     <property key="ContentFopFonts">
         <value xml:lang="en">FOP fonts in a PDF</value>
         <value xml:lang="fr">Polices FOP dans un PDF</value>
