@@ -85,7 +85,7 @@ under the License.
             </hyperlink>
         </field>
         <field name="reportTypeId" title="${uiLabelMap.ReportType}" sort-field="true"><display-entity entity-name="ReportType"/></field><!--신고 항목-->
-        <field name="reportTargetTypeId" title="${uiLabelMap.ReportTargetType}" sort-field="true"><display-entity entity-name="ReportTargetType"/></field><!--신고 대상-->
+        <field name="reportTargetTypeId" title="${uiLabelMap.ReportTargetType}" sort-field="true"><display-entity entity-name="ReportTargetType"/></field><!--신고 대상 타입-->
         <field name="statusId" title="${uiLabelMap.ReportStatus}" sort-field="true"><display-entity entity-name="StatusItem"/></field><!--신고 상태-->
         <field name="targetUserLoginId" title="${uiLabelMap.TargetUserLoginId}"><display/></field><!--신고받은 유저-->
         <field name="userLoginId" title="${uiLabelMap.UserLoginId}"><display/></field><!--신고자-->
@@ -228,20 +228,24 @@ under the License.
                 </entity-options>
             </drop-down>
         </field>
-        <field name="reportName" title="${uiLabelMap.FormFieldTitle_reportName}" required-field="true"><text /></field>
-        <field name="reportName" title="${uiLabelMap.FormFieldTitle_reportName}" required-field="true" widget-style="required"><text placeholder="${uiLabelMap.FormFieldTitle_reportName}"/></field>
-        <field name="description" title="${uiLabelMap.CommonDescription}"/>
-        <field name="longDescription" title="${uiLabelMap.ReportLongDescription}"/>
-        <field name="anotherText">
-            <drop-down allow-empty="true">
-                <option key="Explicit Option" description="${uiLabelMap.ReportExplicitOption}"/>
-                <entity-options entity-name="ReportType" key-field-name="reportTypeId">
+        <field name="reportTargetId" title="${uiLabelMap.ReportTarget}"></field>
+        <field name="reportTargetTypeId" title="${uiLabelMap.ReportTargetType}" required-field="true"><!--신고 대상 타입-->
+            <drop-down allow-empty="false">
+                <entity-options entity-name="ReportTargetType">
                     <entity-order-by field-name="description"/>
                 </entity-options>
             </drop-down>
         </field>
-        <field name="displayAnotherText" use-when="anotherText!=null">
-            <display description="${report.anotherText}"/>
+        <field name="targetUserLoginId" title="${uiLabelMap.TargetUserLoginId}"><text read-only="true"/></field><!--신고된 유저-->
+        <field name="userLoginId" title="${uiLabelMap.UserLoginId}"><text read-only="true"/></field><!--신고자-->
+        <field name="lastUpdatedId"><text default-value="${userLogin.userLoginId}" read-only="true"/></field><!--신고 처리 관리자-->
+        <field name="description" title="${uiLabelMap.ReportDescription}"></field><!--메모-->
+        <field name="comments" title="${uiLabelMap.Comments}"></field><!--신고 내용-->
+        <field name="guiltyYn" title="${uiLabelMap.GuiltyYn}"><!--징계 여부-->
+            <radio no-current-selected-key="N">
+                <option key="Y"/>
+                <option key="N"/>
+            </radio>
         </field>
         <field name="submitButton" use-when="report==null" title="${uiLabelMap.CommonCreate}"><submit button-type="button"/></field>
         <field name="submitButton" use-when="report!=null" title="${uiLabelMap.CommonUpdate}"><submit button-type="button"/></field>

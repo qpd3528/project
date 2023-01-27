@@ -28,8 +28,12 @@
         <value xml:lang="ko">신고 항목</value>
         <value xml:lang="en"></value>
     </property>
-    <property key="ReportTargetType">
+    <property key="ReportTarget">
         <value xml:lang="ko">신고 대상</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="ReportTargetType">
+        <value xml:lang="ko">신고 대상 타입</value>
         <value xml:lang="en"></value>
     </property>
     <property key="ReportStatus">
@@ -66,6 +70,30 @@
     </property>
     <property key="Delete">
         <value xml:lang="ko">삭제</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="Comments">
+        <value xml:lang="ko">신고 내용</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="ReportDescription">
+        <value xml:lang="ko">메모</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="GuiltyYn">
+        <value xml:lang="ko">징계 여부</value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="">
+        <value xml:lang="ko"></value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="">
+        <value xml:lang="ko"></value>
+        <value xml:lang="en"></value>
+    </property>
+    <property key="">
+        <value xml:lang="ko"></value>
         <value xml:lang="en"></value>
     </property>
     <property key="">

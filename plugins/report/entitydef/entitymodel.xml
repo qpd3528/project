@@ -43,16 +43,11 @@ under the License.
         <field name="reportId" type="id"><description>primary sequenced ID</description></field><!--신고 ID-->
         <field name="reportTypeId" type="id"></field><!--신고 항목(타입) ID-->
         <field name="statusId" type="id"></field><!--신고 상태 ID-->
-        <field name="reportTargetTypeId" type="id"></field><!--신고 대상 ID-->
+        <field name="reportTargetId" type="id"></field><!--신고 대상의 ID-->
+        <field name="reportTargetTypeId" type="id"></field><!--신고 대상의 타입 ID-->
         <field name="targetUserLoginId" type="id"></field><!--신고된 유저의 ID-->
-        <field name="talkId" type="id"></field><!--신고된 톡 ID-->
-        <field name="messageId" type="id"></field><!--신고된 메시지 ID-->
-        <field name="storyId" type="id"></field><!--신고된 스토리 ID-->
-        <field name="commentId" type="id"></field><!--신고된 댓글 ID-->
-        <field name="communityId" type="id"></field><!--신고된 커뮤니티 ID-->
-        <field name="adEcomId" type="id"></field><!--신고된 광고/이커머스 ID-->
         <field name="userLoginId" type="id"></field><!--신고자 ID-->
-        <field name="lastUpdatedId" type="id"></field><!--답변자-->
+        <field name="lastUpdatedId" type="id"></field><!--신고 처리 관리자-->
         <field name="description" type="description"></field><!--메모-->
         <field name="comments" type="comment"></field><!--신고 내용-->
         <field name="guiltyYn" type="indicator"></field><!--징계 여부-->
@@ -63,6 +58,24 @@ under the License.
         <relation type="one" fk-name="REPORT_STTS" rel-entity-name="StatusItem">
             <key-map field-name="statusId"/>
         </relation>
+<!--        <relattion type="one" fk-name="REPORT_TALK" rel-entity-name="Talk">-->
+<!--            <key-map field-name="talkId"/>-->
+<!--        </relattion>-->
+<!--        <relattion type="one" fk-name="REPORT_MSG" rel-entity-name="Message">-->
+<!--            <key-map field-name="messageId"/>-->
+<!--        </relattion>-->
+<!--        <relattion type="one" fk-name="REPORT_STR" rel-entity-name="Story">-->
+<!--            <key-map field-name="storyId"/>-->
+<!--        </relattion>-->
+<!--        <relattion type="one" fk-name="REPORT_COMMENT" rel-entity-name="Comment">-->
+<!--            <key-map field-name="commentId"/>-->
+<!--        </relattion>-->
+<!--        <relattion type="one" fk-name="REPORT_COM" rel-entity-name="Community">-->
+<!--            <key-map field-name="communityId"/>-->
+<!--        </relattion>-->
+<!--        <relattion type="one" fk-name="REPORT_ADECOM" rel-entity-name="AdEcom">-->
+<!--            <key-map field-name="adEcomId"/>-->
+<!--        </relattion>-->
         <relation type="one" fk-name="REPORT_TG_TYP" rel-entity-name="ReportTargetType">
             <key-map field-name="reportTargetTypeId"/>
         </relation>
