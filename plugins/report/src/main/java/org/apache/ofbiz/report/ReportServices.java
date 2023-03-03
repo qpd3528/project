@@ -19,12 +19,18 @@
 package org.apache.ofbiz.report;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.websocket.Session;
 
+import clojure.lang.Obj;
 import org.apache.ofbiz.base.util.Debug;
+import org.apache.ofbiz.entity.Delegator;
+import org.apache.ofbiz.entity.GenericEntityException;
+import org.apache.ofbiz.entity.GenericValue;
+import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.service.DispatchContext;
 import org.apache.ofbiz.service.ServiceUtil;
 
@@ -45,5 +51,28 @@ public class ReportServices {
             Debug.logError(e.getMessage(), MODULE);
         }
         return ServiceUtil.returnSuccess();
+    }
+
+    public static Map<String, Object> listReport(DispatchContext ctx, Map<String, Object> context) throws GenericEntityException {
+        Delegator delegator = ctx.getDelegator();
+        String userLoginId = (String) context.get("userLoginId");
+
+
+        List<GenericValue> list = null;
+        if (userLoginId != null) {
+            list = EntityQuery.use(delegator).from("Report").where("userLoginId", userLoginId)
+                    .orderBy("reportId").cache(true).queryList();
+        } else {
+            return ServiceUtil.returnError(getMessage());
+        }
+
+        Map<String, Object> result = ServiceUtil.returnSuccess();
+
+        result.put("list", list);
+
+        return result;
+    }
+    private static String getMessage() {
+        return null;
     }
 }

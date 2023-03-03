@@ -34,18 +34,28 @@ under the License.
         <override name="statusId" optional="false"/>
         <override name="reportName" optional="false"/>
     </service>
-    <service name="updateReport" default-entity-name="Report" engine="entity-auto" invoke="update" auth="true">
+    <service name="updateReport" default-entity-name="Report" engine="entity-auto" invoke="update" auth="true" export="true" action="PUT">
         <description>Update a Report</description>
         <permission-service service-name="reportGenericPermission" main-action="UPDATE"/>
         <auto-attributes include="pk" mode="IN" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="true"/>
         <attribute name="oldStatusId" type="String" mode="OUT" optional="false"/>
     </service>
-    <service name="deleteReport" default-entity-name="Report" engine="entity-auto" invoke="delete" auth="true">
+    <service name="deleteReport" default-entity-name="Report" engine="entity-auto" invoke="delete" auth="true" export="true" action="DELETE">
         <description>Delete a Report</description>
         <permission-service service-name="reportGenericPermission" main-action="DELETE"/>
-        <auto-attributes include="pk" mode="IN" optional="false"/>
+<!--        <auto-attributes include="pk" mode="IN" optional="false"/>-->
+        <attribute type="String" mode="IN" name="reportId" optional="false"/>
     </service>
+
+    <!--custom services-->
+    <service name="listReport" engine="java" auth="true" export="true" action="GET"
+    location="org.apache.ofbiz.report.ReportServices" invoke="listReport">
+        <description>신고 리스트 조회</description>
+        <attribute type="String" mode="IN" name="userLoginId" optional="true"/>
+        <attribute name="list" type="List" mode="OUT" optional="true"/>
+    </service>
+
     <service name="createReportStatus" default-entity-name="ReportStatus" engine="simple"
             location="component://report/minilang/report/ReportServices.xml" invoke="createReportStatus" auth="true">
         <description>Create a ReportStatus</description>

@@ -46,6 +46,7 @@ under the License.
     <ReportTargetType reportTargetTypeId="AD_ECOM" description="광고/이커머스"/>
 
     <StatusValidChange statusId="REPORT_ACCEPTED" statusIdTo="REPORT_IN_PROGRESS" transitionName="처리 중으로 변경"/>
+    <StatusValidChange statusId="REPORT_ACCEPTED" statusIdTo="REPORT_COMPLETED" transitionName="처리 완료로 변경"/>
     <StatusValidChange statusId="REPORT_IN_PROGRESS" statusIdTo="REPORT_COMPLETED" transitionName="처리 완료로 변경"/>
 
     <EnumerationType description="Report Feature Source" enumTypeId="EXMPL_FEAT_SOURCE" hasTable="N"/>

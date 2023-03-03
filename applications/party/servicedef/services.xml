@@ -63,7 +63,7 @@ under the License.
         <attribute name="oldStatusId" type="String" mode="OUT" optional="false"/>
     </service>
 
-    <service name="createPerson" engine="java" default-entity-name="Person"
+    <service name="createPerson" engine="java" default-entity-name="Person" export="true" action="POST"
             location="org.apache.ofbiz.party.party.PartyServices" invoke="createPerson" auth="false">
         <description>Create a Person</description>
         <auto-attributes mode="IN" include="pk" optional="true"/>
@@ -78,7 +78,7 @@ under the License.
 <!--        <override name="firstName" optional="false"/>
         <override name="lastName" optional="false"/>
 -->    </service>
-    <service name="createPersonAndUserLogin" engine="simple" require-new-transaction="true"
+    <service name="createPersonAndUserLogin" engine="simple" require-new-transaction="true" export="true" action="POST"
             location="component://party/minilang/party/PartySimpleMethods.xml" invoke="createPersonAndUserLogin" auth="false">
         <description>Create a Person and UserLogin</description>
         <implements service="createUserLogin"/>
@@ -138,7 +138,7 @@ under the License.
         <attribute name="emailAddress" type="String" mode="IN" optional="true"/>
         <attribute name="partyId" mode="OUT" type="String" optional="false"/>
     </service>
-    <service name="updatePerson" engine="java" default-entity-name="Person"
+    <service name="updatePerson" engine="java" default-entity-name="Person" export="true" action="PUT"
             location="org.apache.ofbiz.party.party.PartyServices" invoke="updatePerson" auth="true">
         <description>Update a Person</description>
 <!--        <required-permissions join-type="AND">
@@ -453,7 +453,7 @@ under the License.
     </service>
 
     <!-- ContactMech services -->
-    <service name="createPartyContactMech" engine="simple"
+    <service name="createPartyContactMech" engine="simple" export="true" action="POST"
             location="component://party/minilang/contact/PartyContactMechServices.xml" invoke="createPartyContactMech" auth="true">
         <description>Create a PartyContactMech</description>
         <permission-service service-name="partyContactMechPermissionCheck" main-action="CREATE"/>
@@ -467,7 +467,7 @@ under the License.
             </type-validate>
         </attribute>
     </service>
-    <service name="updatePartyContactMech" engine="simple"
+    <service name="updatePartyContactMech" engine="simple" export="true" action="PUT"
             location="component://party/minilang/contact/PartyContactMechServices.xml" invoke="updatePartyContactMech" auth="true">
         <description>Update a PartyContactMech</description>
         <permission-service service-name="partyContactMechPermissionCheck" main-action="UPDATE"/>
@@ -485,7 +485,7 @@ under the License.
         <attribute name="infoString" type="String" mode="IN" optional="true"/>
         <attribute name="newContactMechId" type="String" mode="IN" optional="true"/>
     </service>
-    <service name="deletePartyContactMech" engine="simple"
+    <service name="deletePartyContactMech" engine="simple" export="true" action="DELETE"
             location="component://party/minilang/contact/PartyContactMechServices.xml" invoke="deletePartyContactMech" auth="true">
         <description>Delete a PartyContactMech</description>
         <permission-service service-name="partyContactMechPermissionCheck" main-action="DELETE"/>

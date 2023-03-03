@@ -37,7 +37,7 @@ under the License.
         <override name="description" allow-html="safe"/>
         <override name="longDescription" allow-html="safe"/>
     </service>
-    <service name="createProduct" default-entity-name="Product" engine="groovy"
+    <service name="createProduct" default-entity-name="Product" engine="groovy" export="true" action="POST"
                 location="component://product/groovyScripts/product/product/ProductServices.groovy" invoke="createProduct" auth="true">
         <description>Create a Product</description>
         <implements service="interfaceProduct"/>
@@ -183,7 +183,7 @@ under the License.
         <attribute name="weight" type="Long" mode="IN" optional="true"/>
     </service>
 
-    <service name="createProductReview" engine="groovy"
+    <service name="createProductReview" engine="groovy" export="true" action="POST"
             location="component://product/groovyScripts/product/product/ProductServices.groovy" invoke="createProductReview" auth="true">
         <description>Create a product review entity</description>
         <auto-attributes entity-name="ProductReview" mode="IN" include="nonpk" optional="true"/>
@@ -222,6 +222,11 @@ under the License.
         <attribute type="String" mode="IN" name="searchAllId" optional="true"/>
         <attribute type="org.apache.ofbiz.entity.GenericValue" mode="OUT" name="product" optional="true"/>
         <attribute type="List" mode="OUT" name="productsList" optional="true"/>
+    </service>
+
+    <service name="productTagSearch" engine="java" auth="true" export="true" action="GET"
+    location="org.apache.ofbiz.product.product.ProductServices" invoke="productTagSearch">
+
     </service>
 
     <!-- Product Association Services -->

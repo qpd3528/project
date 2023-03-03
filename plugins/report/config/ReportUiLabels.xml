@@ -29,7 +29,7 @@
         <value xml:lang="en"></value>
     </property>
     <property key="ReportTarget">
-        <value xml:lang="ko">신고 대상</value>
+        <value xml:lang="ko">신고 대상 ID</value>
         <value xml:lang="en"></value>
     </property>
     <property key="ReportTargetType">
