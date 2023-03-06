@@ -25,11 +25,26 @@ under the License.
     <version>1.0</version>
 
     <!-- Report & Related Services -->
+<!--    <service name="createReport" default-entity-name="Report" engine="entity-auto" invoke="create" auth="true" export="true" action="POST">-->
+<!--        <description>Create a Report</description>-->
+<!--        <permission-service service-name="reportGenericPermission" main-action="CREATE"/>-->
+<!--        <auto-attributes include="pk" mode="OUT" optional="false"/>-->
+<!--        <auto-attributes include="nonpk" mode="IN" optional="true"/>-->
+<!--        <override name="reportTypeId" optional="false"/>-->
+<!--        <override name="statusId" optional="false"/>-->
+<!--        <override name="reportName" optional="false"/>-->
+<!--    </service>-->
     <service name="createReport" default-entity-name="Report" engine="entity-auto" invoke="create" auth="true" export="true" action="POST">
         <description>Create a Report</description>
         <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
-        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <attribute type="String" mode="IN" name="userLoginId" optional="true"/>
+        <attribute type="String" mode="IN" name="reportTargetId" optional="true"/>
+        <attribute type="String" mode="IN" name="comments" optional="true"/>
+        <attribute type="String" mode="IN" name="statusId" optional="true"/>
+        <attribute type="String" mode="IN" name="reportTargetTypeId" optional="true"/>
+        <attribute type="String" mode="IN" name="reportTypeId" optional="true"/>
+        <attribute type="String" mode="IN" name="targetUserLoginId" optional="true"/>
         <override name="reportTypeId" optional="false"/>
         <override name="statusId" optional="false"/>
         <override name="reportName" optional="false"/>

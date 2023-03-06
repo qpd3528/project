@@ -181,19 +181,26 @@ under the License.
     </service>
 
     <!-- StatusItem services -->
-    <service name="createStatusItem" default-entity-name="StatusItem" engine="entity-auto" invoke="create" auth="true">
+    <service name="createStatusItem" default-entity-name="StatusItem" engine="entity-auto" invoke="create" auth="true" export="true" action="POST">
         <description>Create a StatusItem Record</description>
         <auto-attributes include="pk" mode="INOUT" optional="true"/>
         <auto-attributes include="nonpk" mode="IN" optional="true"/>
     </service>
-    <service name="updateStatusItem" default-entity-name="StatusItem" engine="entity-auto" invoke="update" auth="true">
+    <service name="updateStatusItem" default-entity-name="StatusItem" engine="entity-auto" invoke="update" auth="true" export="true" action="PUT">
         <description>Update a StatusItem Record</description>
         <auto-attributes include="pk" mode="IN"/>
         <auto-attributes include="nonpk" mode="IN" optional="true"/>
     </service>
-    <service name="deleteStatusItem" default-entity-name="StatusItem" engine="entity-auto" invoke="delete" auth="true">
+    <service name="deleteStatusItem" default-entity-name="StatusItem" engine="entity-auto" invoke="delete" auth="true" export="true" action="DELETE">
         <description>Delete a StatusItem Record</description>
         <auto-attributes include="pk" mode="IN"/>
+    </service>
+    <!-- StatusItem custom services -->
+    <service name="listStatusItem" default-entity-name="StatusItem" engine="java" auth="true" export="true" action="GET"
+             location="org.apache.ofbiz.service.ReportServices" invoke="listStatusItem">
+        <description>List StatusItem</description>
+        <attribute type="String" mode="IN" name="statusTypeId" optional="true"/>
+        <attribute name="list" type="List" mode="OUT" optional="true"/>
     </service>
 
     <service name="createStatusType" default-entity-name="StatusType" engine="entity-auto" invoke="create" auth="true">
