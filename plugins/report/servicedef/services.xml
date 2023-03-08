@@ -72,7 +72,7 @@ under the License.
     </service>
 
     <service name="createReportStatus" default-entity-name="ReportStatus" engine="simple"
-            location="component://report/minilang/report/ReportServices.xml" invoke="createReportStatus" auth="true">
+            location="component://report/minilang/report/ReportServices.xml" invoke="createReportStatus" auth="true" export="true" action="POST">
         <description>Create a ReportStatus</description>
         <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
         <auto-attributes include="all" mode="IN" optional="false">
@@ -161,19 +161,48 @@ under the License.
     </service>
 
     <!-- ReportType services -->
-    <service name="createReportType" default-entity-name="ReportType" engine="entity-auto" invoke="create" auth="true">
+    <service name="createReportType" default-entity-name="ReportType" engine="entity-auto" invoke="create" auth="true" export="true" action="POST">
         <description>Create a record of ReportType</description>
         <auto-attributes include="nonpk" mode="IN" optional="true"/>
         <auto-attributes include="pk" mode="INOUT" optional="true"/>
     </service>
-    <service name="updateReportType" default-entity-name="ReportType" engine="entity-auto" invoke="update" auth="true">
+    <service name="updateReportType" default-entity-name="ReportType" engine="entity-auto" invoke="update" auth="true" export="true" action="PUT">
         <description>Update a record of ReportType</description>
         <auto-attributes include="pk" mode="IN" optional="false"/>
         <auto-attributes include="nonpk" mode="IN" optional="true"/>
     </service>
-    <service name="deleteReportType" default-entity-name="ReportType" engine="entity-auto" invoke="delete" auth="true">
+    <service name="deleteReportType" default-entity-name="ReportType" engine="entity-auto" invoke="delete" auth="true" export="true" action="DELETE">
         <description>Delete a record of ReportType</description>
         <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <!-- ReportType Custom services -->
+    <service name="listReportType" default-entity-name="ReportType" engine="java" auth="true" export="true" action="GET"
+             location="org.apache.ofbiz.report.ReportServices" invoke="listReportType">
+        <description>신고 타입 조회</description>
+<!--        <attribute type="String" mode="IN" name="reportTypeId" optional="true"/>-->
+        <attribute name="list" type="List" mode="OUT" optional="true"/>
+    </service>
+
+    <!-- ReportTargetType Custom services -->
+    <service name="createReportTargetType" default-entity-name="ReportTargetType" engine="entity-auto" invoke="create" auth="true" export="true" action="POST">
+        <description>신고 타겟 타입 생성</description>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+        <auto-attributes include="pk" mode="INOUT" optional="true"/>
+    </service>
+    <service name="updateReportTargetType" default-entity-name="ReportTargetType" engine="entity-auto" invoke="update" auth="true" export="true" action="PUT">
+        <description>신고 타겟 타입 수정</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true"/>
+    </service>
+    <service name="deleteReportTargetType" default-entity-name="ReportTargetType" engine="entity-auto" invoke="delete" auth="true" export="true" action="DELETE">
+        <description>신고 타겟 타입 삭제</description>
+        <auto-attributes include="pk" mode="IN" optional="false"/>
+    </service>
+    <service name="listReportTargetType" default-entity-name="ReportTargetType" engine="java" auth="true" export="true" action="GET"
+             location="org.apache.ofbiz.report.ReportServices" invoke="listReportType">
+        <description>신고 타겟 타입 조회</description>
+
+        <attribute name="list" type="List" mode="OUT" optional="true"/>
     </service>
 
     <!-- ReportFeatureApplType services -->
