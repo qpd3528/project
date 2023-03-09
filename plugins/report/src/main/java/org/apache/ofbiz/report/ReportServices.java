@@ -85,6 +85,19 @@ public class ReportServices {
         return result;
     }
 
+    public static Map<String, Object> listReportTargetType(DispatchContext ctx, Map<String, Object> context) throws GenericEntityException {
+        Delegator delegator = ctx.getDelegator();
+
+        List<GenericValue> list = EntityQuery.use(delegator).from("ReportTargetType").orderBy("reportTargetTypeId").cache(true).queryList();
+
+        Map<String, Object> result = ServiceUtil.returnSuccess();
+
+        result.put("list", list);
+
+        return result;
+    }
+
+
     private static String getMessage() {
         return null;
     }

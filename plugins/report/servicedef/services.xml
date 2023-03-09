@@ -199,9 +199,8 @@ under the License.
         <auto-attributes include="pk" mode="IN" optional="false"/>
     </service>
     <service name="listReportTargetType" default-entity-name="ReportTargetType" engine="java" auth="true" export="true" action="GET"
-             location="org.apache.ofbiz.report.ReportServices" invoke="listReportType">
+             location="org.apache.ofbiz.report.ReportServices" invoke="listReportTargetType">
         <description>신고 타겟 타입 조회</description>
-
         <attribute name="list" type="List" mode="OUT" optional="true"/>
     </service>
 
