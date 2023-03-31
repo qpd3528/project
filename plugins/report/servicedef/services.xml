@@ -38,13 +38,13 @@ under the License.
         <description>Create a Report</description>
         <permission-service service-name="reportGenericPermission" main-action="CREATE"/>
         <auto-attributes include="pk" mode="OUT" optional="false"/>
-        <attribute type="String" mode="IN" name="userLoginId" optional="true"/>
-        <attribute type="String" mode="IN" name="reportTargetId" optional="true"/>
+        <attribute type="String" mode="IN" name="userLoginId" optional="false"/>
+        <attribute type="String" mode="IN" name="reportTargetId" optional="false"/>
         <attribute type="String" mode="IN" name="comments" optional="true"/>
-        <attribute type="String" mode="IN" name="statusId" optional="true"/>
-        <attribute type="String" mode="IN" name="reportTargetTypeId" optional="true"/>
-        <attribute type="String" mode="IN" name="reportTypeId" optional="true"/>
-        <attribute type="String" mode="IN" name="targetUserLoginId" optional="true"/>
+        <attribute type="String" mode="IN" name="statusId" optional="false"/>
+        <attribute type="String" mode="IN" name="reportTargetTypeId" optional="false"/>
+        <attribute type="String" mode="IN" name="reportTypeId" optional="false"/>
+        <attribute type="String" mode="IN" name="targetUserLoginId" optional="false"/>
         <override name="reportTypeId" optional="false"/>
         <override name="statusId" optional="false"/>
         <override name="reportName" optional="false"/>
@@ -67,7 +67,7 @@ under the License.
     <service name="listReport" engine="java" auth="true" export="true" action="GET"
     location="org.apache.ofbiz.report.ReportServices" invoke="listReport">
         <description>신고 리스트 조회</description>
-        <attribute type="String" mode="IN" name="userLoginId" optional="true"/>
+        <attribute type="String" mode="IN" name="userLoginId" optional="false"/>
         <attribute name="list" type="List" mode="OUT" optional="true"/>
     </service>
 
@@ -80,6 +80,13 @@ under the License.
             <exclude field-name="statusEndDate"/>
             <exclude field-name="changeByUserLoginId"/>
         </auto-attributes>
+    </service>
+    <service name="updateReportStatus" default-entity-name="Report" engine="entity-auto" invoke="update" auth="true" export="true" action="PUT">
+        <description>Update a ReportStatus</description>
+        <permission-service service-name="reportGenericPermission" main-action="UPDATE"/>
+        <attribute type="String" mode="IN" name="reportId" optional="false"/>
+        <attribute type="String" mode="IN" name="statusId" optional="false"/>
+        <attribute name="oldStatusId" type="String" mode="OUT" optional="false"/>
     </service>
 
     <service name="createReportItem" default-entity-name="ReportItem" engine="entity-auto" invoke="create" auth="true">
@@ -180,6 +187,7 @@ under the License.
              location="org.apache.ofbiz.report.ReportServices" invoke="listReportType">
         <description>신고 타입 조회</description>
 <!--        <attribute type="String" mode="IN" name="reportTypeId" optional="true"/>-->
+        <attribute type="String" mode="IN" name="reportUse" optional="false"/>
         <attribute name="list" type="List" mode="OUT" optional="true"/>
     </service>
 

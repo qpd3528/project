@@ -199,7 +199,7 @@ under the License.
     <service name="listStatusItem" default-entity-name="StatusItem" engine="java" auth="true" export="true" action="GET"
              location="org.apache.ofbiz.service.StatusCustomService" invoke="listStatusItem">
         <description>List StatusItem</description>
-        <attribute type="String" mode="IN" name="statusTypeId" optional="true"/>
+        <attribute type="String" mode="IN" name="statusTypeId" optional="false"/>
         <attribute name="list" type="List" mode="OUT" optional="true"/>
     </service>
 
